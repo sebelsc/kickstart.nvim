@@ -9,7 +9,14 @@ spell/
 # nvim-pack-lock.json in version control - see :help vim.pack-lockfile
 # For the official `nvim-lua/kickstart.nvim` git repository, we leave it ignored to avoid unneeded
 # merge conflicts.
-nvim-pack-lock.json
+#nvim-pack-lock.json
 
 .DS_Store
 
+/.idea/.gitignore
+/.idea/Harpooner Menu
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/nvim.iml
+/.idea/palantir-java-format.xml
+/.idea/vcs.xml
