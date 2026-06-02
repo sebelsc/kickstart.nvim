@@ -383,18 +383,21 @@ do
   -- change the command under that to load whatever the name of that colorscheme is.
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  vim.pack.add { gh 'folke/tokyonight.nvim' }
+  vim.pack.add { gh 'olimorris/onedarkpro.nvim' }
   ---@diagnostic disable-next-line: missing-fields
-  require('tokyonight').setup {
+  require('onedarkpro').setup {
     styles = {
-      comments = { italic = false }, -- Disable italics in comments
+      comments = 'italic', -- Disable italics in comments
+      keywords = 'bold,italic',
+      operators = 'bold',
+      constants = 'bold',
     },
   }
 
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'onedark_dark'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -494,6 +497,9 @@ do
     --   },
     -- },
     -- pickers = {}
+    defaults = {
+      path_display = { 'smart', 'filename_first' },
+    },
     extensions = {
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
@@ -610,8 +616,8 @@ do
   -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
   -- Useful status updates for LSP.
-  vim.pack.add { gh 'j-hui/fidget.nvim' }
-  require('fidget').setup {}
+  -- vim.pack.add { gh 'j-hui/fidget.nvim' }
+  -- require('fidget').setup {}
 
   --  This function gets run when an LSP attaches to a particular buffer.
   --    That is to say, every time a new file is opened that is associated with
@@ -698,7 +704,7 @@ do
     -- ts_ls = {},
 
     stylua = {
-      cmd = {'stylua', '--lsp'}
+      cmd = { 'stylua', '--lsp' },
     }, -- Used to format Lua code
 
     -- Special Lua Config, as recommended by neovim help docs
@@ -900,7 +906,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'go', 'java' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
@@ -963,10 +969,10 @@ do
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.debug'
-  require 'kickstart.plugins.indent_line'
+  -- require 'kickstart.plugins.indent_line'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  require 'kickstart.plugins.neo-tree'
+  -- require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -978,4 +984,3 @@ end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-
