@@ -1,0 +1,2 @@
+-- vim.pack.add { 'ray-x/go.nvim' }
+-- require('go').setup {}
