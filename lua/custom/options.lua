@@ -4,7 +4,7 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.g.have_nerd_font = true
 vim.o.relativenumber = true
-vim.g.snacks_dim = true
+vim.g.snacks_dim = false
 
 -- Custom Keymap changes
 
@@ -53,6 +53,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   end,
 })
 
-vim.cmd.doautocmd 'ColorScheme onedark_dark'
+-- vim.cmd.doautocmd("ColorScheme " .. vim.g.colors_name)
 
 
