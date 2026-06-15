@@ -54,5 +54,3 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 -- vim.cmd.doautocmd("ColorScheme " .. vim.g.colors_name)
-
-

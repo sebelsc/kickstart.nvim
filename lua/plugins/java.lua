@@ -15,11 +15,9 @@
 -- This re-runs mason-tool-installer with the Java tools appended; harmless if
 -- it overlaps with the list in your LSP section.
 local ok, mti = pcall(require, 'mason-tool-installer')
-if ok then
-    mti.setup {
-        ensure_installed = { 'jdtls', 'java-debug-adapter', 'java-test', 'vscode-spring-boot-tools' },
-    }
-end
+if ok then mti.setup {
+  ensure_installed = { 'jdtls', 'java-debug-adapter', 'java-test' },
+} end
 
 -- Add nvim-neotest for better testing support
 -- vim.pack.add {
@@ -29,18 +27,23 @@ end
 --     'https://github.com/theHamsta/nvim-dap-virtual-text',
 -- }
 --
--- require 'nvim-treesitter'
--- require('nvim-dap-virtual-text').setup {}
+require('spring_boot').setup {
+  ls_path = vim.fn.expand '~/.vscode/extensions/vmware.vscode-spring-boot-2.2.0/language-server/spring-boot-language-server-2.2.0-SNAPSHOT-exec.jar',
+  java_cmd = vim.fn.expand '/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home/bin/java',
+}
+
+require 'nvim-treesitter'
+require('nvim-dap-virtual-text').setup {}
 --
--- require('neotest').setup {
---   adapters = {
---     require 'neotest-java' {
---       ignore_wrapper = false, -- use gradlew
---       log_level = vim.log.levels.DEBUG,
---     },
---   },
--- }
---
+require('neotest').setup {
+  adapters = {
+    require 'neotest-java' {
+      ignore_wrapper = false, -- use gradlew
+      log_level = vim.log.levels.DEBUG,
+    },
+  },
+}
+
 -- local check, NJPath = pcall(require, 'neotest-java.model.path')
 -- if check then
 --   local orig = NJPath.append
@@ -49,9 +52,9 @@ end
 --     return orig(self, other)
 --   end
 -- end
--- -- neotest discovers nvim-treesitter via parser file location, but parsers land in
--- -- site/parser/ (outside the plugin dir), so the plugin's lua/ never reaches the
--- -- child process. Inject it explicitly.
+-- neotest discovers nvim-treesitter via parser file location, but parsers land in
+-- site/parser/ (outside the plugin dir), so the plugin's lua/ never reaches the
+-- child process. Inject it explicitly.
 -- local _sub = require 'neotest.lib.subprocess'
 -- local _orig = _sub.add_paths_to_rtp
 -- _sub.add_paths_to_rtp = function(paths)
@@ -72,6 +75,3 @@ end
 -- Uncomment for application.properties/yaml completion and bean navigation.
 -- Also uncomment the matching block in ftplugin/java.lua that appends its
 -- bundles to `bundles`.
-
-
-require('spring_boot').init_lsp_commands()

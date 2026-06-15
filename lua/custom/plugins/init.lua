@@ -11,4 +11,3 @@ for file_name, type in vim.fs.dir(plugins_dir) do
     require('custom.plugins.' .. module)
   end
 end
-

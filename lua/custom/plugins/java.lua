@@ -21,9 +21,9 @@ if ok then mti.setup {
 
 -- Add nvim-neotest for better testing support
 vim.pack.add {
---   'https://github.com/nvim-neotest/neotest',
+  --   'https://github.com/nvim-neotest/neotest',
   'https://github.com/nvim-neotest/nvim-nio', -- already installed via kickstart debug, but harmless
---   'https://github.com/rcasia/neotest-java',
+  --   'https://github.com/rcasia/neotest-java',
   'https://github.com/theHamsta/nvim-dap-virtual-text',
 }
 --

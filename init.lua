@@ -29,31 +29,45 @@
 -- ── 1. Leader key ────────────────────────────────────────────────────────
 -- Must precede any require() that registers keymaps using <leader>.
 
-
 -- ── 2. Options ───────────────────────────────────────────────────────────
 -- Pure vim.opt calls. No plugin references.
-require("config.options")
+require 'config.options'
 
 -- ── 3 + 4. Plugins — add then configure immediately ──────────────────────
 -- Each require("plugins.X") contains the setup() call for that plugin.
 -- The pattern is always: vim.pack.add() → require("plugins.X").setup()
 -- Because add() is synchronous, the plugin is available when setup() runs.
-require("config.plugins") -- see lua/config/plugins.lua below
+require 'config.plugins' -- see lua/config/plugins.lua below
+
+local ih_ns = vim.api.nvim_create_namespace 'nvim.lsp.inlayhint'
+local orig = vim.api.nvim_buf_set_extmark
+
+vim.api.nvim_buf_set_extmark = function(buf, ns, line, col, opts)
+  if ns == ih_ns then
+    local ok, result = pcall(orig, buf, ns, line, col, opts)
+    if not ok then
+      vim.notify(result, vim.log.levels.WARN)
+      return -1
+    end
+    return result
+  end
+  return orig(buf, ns, line, col, opts)
+end
 
 -- ── 5. Autocmds ──────────────────────────────────────────────────────────
 -- LspAttach, FileType handlers, format-on-save, etc.
 -- LspAttach fires when a file is first opened after init.lua completes,
 -- so registering it here is always early enough.
-require("config.autocmds").setup()
+require('config.autocmds').setup()
 
 -- ── 6. Keymaps ───────────────────────────────────────────────────────────
 -- All plugins are in the runtimepath by now (config.plugins ran above).
 -- Top-level require() of any plugin is safe here — no inline tricks needed.
-require("config.keymaps").setup()
+require('config.keymaps').setup()
 
 -- ── 7. Diagnostics ───────────────────────────────────────────────────────
-require("config.diagnostics").setup()
+require('config.diagnostics').setup()
 
 -- ── 8. Highlights ────────────────────────────────────────────────────────
 -- Semantic token overrides and colorscheme-dependent hl groups.
-require("config.highlights").setup()
+require('config.highlights').setup()

@@ -247,7 +247,7 @@ do
   })
 end
 
-require("custom.options")
+require 'custom.options'
 
 -- ============================================================
 -- SECTION 2: PLUGIN MANAGER INTRO
@@ -397,7 +397,7 @@ do
     },
     options = {
       cursorline = true,
-    }
+    },
   }
 
   -- Load the colorscheme here.
