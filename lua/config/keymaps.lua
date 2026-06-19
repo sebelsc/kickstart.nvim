@@ -78,36 +78,34 @@ local function setup_core()
 
   -- ── Buffer (<leader>b) ───────────────────────────────────────────────
   vim.keymap.set('n', '<C-^>', '<C-^>', { desc = 'alternate buffer', silent = true })
-  vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = '[B]uffer [D]elete', silent = true })
-  vim.keymap.set('n', '<leader>bD', function() Snacks.bufdelete { wipe = true } end, { desc = '[B]uffer [D]elete (wipe)', silent = true })
-  vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = '[B]uffer delete [O]ther', silent = true })
-  vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = '[B]uffer [S]cratch', silent = true })
-  vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = '[B]uffer [S]elect scratch', silent = true })
+  vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = '[b]uffer [d]elete', silent = true })
+  vim.keymap.set('n', '<leader>bD', function() Snacks.bufdelete { wipe = true } end, { desc = '[b]uffer [D]elete (wipe)', silent = true })
+  vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = '[b]uffer delete []ther', silent = true })
+  vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = '[b]uffer [s]cratch', silent = true })
+  vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = '[b]uffer [S]elect scratch', silent = true })
 
   -- ── File (<leader>f) ─────────────────────────────────────────────────
-  vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = '[F]ile [R]ename', silent = true })
+  vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = '[f]ile [r]ename', silent = true })
 
   -- ── Search / Snacks picker (<leader>s) ───────────────────────────────
   -- Bare shortcuts — quick access without opening the group menu
-  vim.keymap.set('n', '<leader><space>', function() Snacks.picker.recent() end, { desc = 'Recent Files', silent = true })
+  vim.keymap.set('n', '<leader><space>', function() Snacks.picker.smart() end, { desc = 'Recent Files', silent = true })
   vim.keymap.set('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep', silent = true })
   vim.keymap.set('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers', silent = true })
 
-  vim.keymap.set('n', '<leader>sf', function() Snacks.picker.smart() end, { desc = '[S]earch [F]iles', silent = true })
-  vim.keymap.set('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = '[S]earch [G]rep', silent = true })
-  vim.keymap.set('n', '<leader>sb', function() Snacks.picker.buffers() end, { desc = '[S]earch [B]uffers', silent = true })
-  vim.keymap.set('n', '<leader>sc', function() Snacks.picker.command_history() end, { desc = '[S]earch [C]ommands', silent = true })
-  vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = '[S]earch [K]eymaps', silent = true })
-  vim.keymap.set('n', '<leader>se', function() Snacks.picker.explorer() end, { desc = '[S]earch [E]xplorer', silent = true })
-
-  vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit() end, { desc = '[G]it [L]azy', silent = true })
+  vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = '[s]earch [f]iles', silent = true })
+  vim.keymap.set('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = '[s]earch [g]rep', silent = true })
+  vim.keymap.set('n', '<leader>sb', function() Snacks.picker.buffers() end, { desc = '[s]earch [b]uffers', silent = true })
+  vim.keymap.set('n', '<leader>sc', function() Snacks.picker.command_history() end, { desc = '[s]earch [c]ommands', silent = true })
+  vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = '[s]earch [k]eymaps', silent = true })
+  vim.keymap.set('n', '<leader>se', function() Snacks.picker.explorer() end, { desc = '[s]earch [e]xplorer', silent = true })
+  vim.keymap.set('n', '<leader>st', function() Snacks.terminal.list() end, { desc = '[s]earch [t]erminal', silent = true })
   -- ── Notify (<leader>n) ───────────────────────────────────────────────
-  vim.keymap.set('n', '<leader>nh', function() Snacks.notifier.show_history() end, { desc = '[N]otify [H]istory', silent = true })
 
   -- ── Code (<leader>c) ─────────────────────────────────────────────────
-  vim.keymap.set('n', '<leader>cc', function() require('treesitter-context').go_to_context(vim.v.count1) end, { desc = '[C]ode [C]ontext', silent = true })
+  vim.keymap.set('n', '<leader>cc', function() require('treesitter-context').go_to_context(vim.v.count1) end, { desc = '[c]ode [c]ontext', silent = true })
 
-  vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = '[C]ode [D]iagnostic', silent = true })
+  vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = '[c]ode [d]iagnostic', silent = true })
 
   vim.keymap.set(
     'n',
@@ -124,17 +122,56 @@ local function setup_core()
   vim.keymap.set('n', '<leader>cq', function() Snacks.picker.qflist() end, { desc = '[C]ode [Q]uickfix', silent = true })
 
   -- ── Inspect (<leader>i) ───────────────────────────────────────────
-  vim.keymap.set('n', '<leader>ig', '<cmd>Inspect<cr>', { desc = '[I]nspect Highlight [G]roups' })
+
+  vim.keymap.set('n', '<leader>ig', function()
+    local pos = vim.inspect_pos()
+    local lines = {}
+
+    if #pos.semantic_tokens > 0 then
+      table.insert(lines, 'LSP:')
+      for _, t in ipairs(pos.semantic_tokens) do
+        if t.hl_groups then
+          for _, g in ipairs(t.hl_groups) do
+            table.insert(lines, '  ' .. g)
+          end
+        elseif t.hl_group then
+          table.insert(lines, '  ' .. t.hl_group)
+        end
+      end
+    end
+
+    if #pos.treesitter > 0 then
+      table.insert(lines, 'Treesitter:')
+      for _, t in ipairs(pos.treesitter) do
+        table.insert(lines, '  ' .. t.capture .. ' → ' .. t.hl_group)
+      end
+    end
+
+    if #pos.extmarks > 0 then
+      table.insert(lines, 'Extmarks:')
+      for _, e in ipairs(pos.extmarks) do
+        if e.hl_group then table.insert(lines, '  ' .. e.hl_group) end
+      end
+    end
+
+    Snacks.notify(table.concat(lines, '\n'), { title = 'Inspect', timeout = 30000 })
+  end, { desc = 'Inspect highlights' })
+
+  -- ── UI toggles (<leader>u) ───────────────────────────────────────────
+  vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit() end, { desc = '[g]it [l]azy', silent = true })
 
   -- ── UI toggles (<leader>u) ───────────────────────────────────────────
   local toggle = Snacks.toggle
-  toggle.diagnostics():map('<leader>ud', { desc = '[U]I [D]iagnostics' })
-  toggle.inlay_hints():map('<leader>ui', { desc = '[U]I [I]nlay hints' })
-  toggle.treesitter():map('<leader>ut', { desc = '[U]I [T]reesitter' })
-  toggle.option('relativenumber'):map('<leader>ur', { desc = '[U]I [R]elative numbers' })
-  toggle.option('wrap'):map('<leader>uw', { desc = '[U]I [W]rap' })
-  toggle.option('spell'):map('<leader>us', { desc = '[U]I [S]pell' })
-  toggle.diagnostics({ virtual_text = true }):map('<leader>uv', { desc = '[U]I [V]irtual text' })
+  toggle.diagnostics():map('<leader>utd', { desc = '[u]i [d]iagnostics' })
+  toggle.inlay_hints():map('<leader>uti', { desc = '[u]i [i]nlay hints' })
+  -- toggle.treesitter():map('<leader>ut', { desc = '[U]I [T]reesitter' })
+  -- toggle.option('relativenumber'):map('<leader>ur', { desc = '[U]I [R]elative numbers' })
+  toggle.option('wrap'):map('<leader>utw', { desc = '[u]i [w]rap' })
+  -- toggle.option('spell'):map('<leader>us', { desc = '[U]I [S]pell' })
+  toggle.diagnostics({ virtual_text = true }):map('<leader>utv', { desc = '[u]i [v]irtual text' })
+  vim.keymap.set('n', '<leader>uso', function() Snacks.terminal() end, { desc = '[u]i [s]hell [o]pen', silent = true })
+  vim.keymap.set('t', '<C-t>', function() Snacks.terminal() end) -- toggle from terminal mode too
+  vim.keymap.set('n', '<leader>unh', function() Snacks.notifier.show_history() end, { desc = '[u]i [n]otify [h]istory', silent = true })
 
   -- ── Jumps (<leader>j) ───────────────────────────────────────────
   vim.keymap.set({ 'n', 'x', 'o' }, '<leader>jj', function() require('flash').jump() end, { desc = 'Flash', silent = true })
@@ -159,25 +196,46 @@ local function setup_core()
   -- ── Test running (<leader>t) ─────────────────────────────────────────
   local nt = require 'neotest'
 
-  vim.keymap.set('n', '<leader>tr', function() nt.run.run() end, { desc = '[T]est [R]un', silent = true })
-  vim.keymap.set('n', '<leader>tf', function() nt.run.run(vim.fn.expand '%') end, { desc = '[T]est [F]ile', silent = true })
-  vim.keymap.set('n', '<leader>ta', function() nt.run.run(vim.fn.getcwd()) end, { desc = '[T]est [A]ll', silent = true })
-  vim.keymap.set('n', '<leader>tl', function() nt.run.run_last() end, { desc = '[T]est [L]ast', silent = true })
-  vim.keymap.set('n', '<leader>tx', function() nt.run.stop() end, { desc = '[T]est [X]stop', silent = true })
-  vim.keymap.set('n', '<leader>td', function() nt.run.run { strategy = 'dap' } end, { desc = '[T]est [D]ebug', silent = true })
-  vim.keymap.set('n', '<leader>to', function() nt.output.open { enter = true } end, { desc = '[T]est [O]utput', silent = true })
-  vim.keymap.set('n', '<leader>tO', function() nt.output_panel.toggle() end, { desc = '[T]est [O]utput panel', silent = true })
-  vim.keymap.set('n', '<leader>ts', function() nt.summary.toggle() end, { desc = '[T]est [S]ummary', silent = true })
+  vim.keymap.set('n', '<leader>tr', function() nt.run.run() end, { desc = '[t]est [r]un', silent = true })
+  vim.keymap.set('n', '<leader>tf', function() nt.run.run(vim.fn.expand '%') end, { desc = '[t]est [f]ile', silent = true })
+  vim.keymap.set('n', '<leader>ta', function() nt.run.run(vim.fn.getcwd()) end, { desc = '[t]est [a]ll', silent = true })
+  vim.keymap.set('n', '<leader>tl', function() nt.run.run_last() end, { desc = '[t]est [l]ast', silent = true })
+  vim.keymap.set('n', '<leader>tx', function() nt.run.stop() end, { desc = '[t]est [x]stop', silent = true })
+  vim.keymap.set('n', '<leader>td', function() nt.run.run { strategy = 'dap' } end, { desc = '[t]est [d]ebug', silent = true })
+  vim.keymap.set('n', '<leader>to', function() nt.output.open { enter = true } end, { desc = '[t]est [o]utput', silent = true })
+  vim.keymap.set('n', '<leader>tO', function() nt.output_panel.toggle() end, { desc = '[t]est [O]utput panel', silent = true })
+  vim.keymap.set('n', '<leader>ts', function() nt.summary.toggle() end, { desc = '[t]est [s]ummary', silent = true })
   vim.keymap.set('n', '<leader>tq', function()
     nt.run.run(vim.fn.getcwd())
     vim.cmd 'copen'
-  end, { desc = '[T]est [Q]uickfix', silent = true })
+  end, { desc = '[t]est [q]uickfix', silent = true })
 
   vim.keymap.set('n', ']t', function() nt.jump.next { status = 'failed' } end, { desc = 'next failed test', silent = true })
   vim.keymap.set('n', '[t', function() nt.jump.prev { status = 'failed' } end, { desc = 'prev failed test', silent = true })
 
   vim.keymap.set({ 'n', 't' }, ']]', function() Snacks.words.jump(vim.v.count1) end, { desc = 'Next Word Reference' })
   vim.keymap.set({ 'n', 't' }, '[[', function() Snacks.words.jump(-vim.v.count1) end, { desc = 'Prev Word Reference' })
+
+  -- Buffers <leader>b
+  -- bufdelete: replace :bd bindings with window-safe versions
+  vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = '[d]elete [b]uffer' })
+  vim.keymap.set('n', '<leader>bD', function() Snacks.bufdelete { wipe = true } end, { desc = 'wipe buffer' })
+  vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'delete other buffers' })
+
+  -- rename: LSP-aware file rename — updates all import references via
+  -- workspace/willRenameFiles, which jdtls supports.
+  -- Run this instead of shelling out to mv or using the OS file manager.
+  vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = 'rename file (LSP)' })
+
+  -- scratch
+  vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'scratch buffer' })
+  vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = 'select scratch' })
+
+  -- notifier history (useful to review missed jdtls build messages)
+  vim.keymap.set('n', '<leader>nh', function() Snacks.notifier.show_history() end, { desc = 'notification history' })
+
+  -- Terminal <leader>t
+  -- In your keymaps or snacks config
 end
 
 -- ── LSP keymaps (buffer-local) ───────────────────────────────────────────
@@ -232,16 +290,15 @@ local function setup_whichkey()
   local wk = require 'which-key'
 
   wk.add {
-    { '<leader>b', group = '[B]uffer' },
-    { '<leader>c', group = '[C]ode' },
-    { '<leader>f', group = '[F]ile' },
-    { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
-    { '<leader>i', group = '[I]nspect', mode = { 'n' } },
-    { '<leader>j', group = '[J]ump', mode = { 'n', 'v' } },
-    { '<leader>n', group = '[N]otify' },
-    { '<leader>s', group = '[S]earch' },
-    { '<leader>t', group = '[T]est' },
-    { '<leader>u', group = '[U]I' },
+    { '<leader>b', group = '[b]uffer' },
+    { '<leader>c', group = '[c]ode' },
+    { '<leader>f', group = '[f]ile' },
+    { '<leader>g', group = '[g]it', mode = { 'n', 'v' } },
+    { '<leader>i', group = '[i]nspect', mode = { 'n' } },
+    { '<leader>j', group = '[j]ump', mode = { 'n', 'v' } },
+    { '<leader>s', group = '[s]earch' },
+    { '<leader>t', group = '[t]est' },
+    { '<leader>u', group = '[u]i' },
 
     { ']', group = 'Next', mode = { 'n', 'x', 'o' } },
     { '[', group = 'Prev', mode = { 'n', 'x', 'o' } },

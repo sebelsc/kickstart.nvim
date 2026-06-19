@@ -1,5 +1,4 @@
 require('snacks').setup {
-
   -- ── bufdelete ────────────────────────────────────────────────────────
   -- Replaces :bd / :bw. Critically: does NOT close the window when deleting
   -- a buffer. Falls back to the alternate buffer (#), then last used —
@@ -88,7 +87,7 @@ require('snacks').setup {
     sources = {
       files = {
         hidden = true,
-        ignored = false,
+        ignored = true,
         layout = { preset = 'select', layout = { width = 0.7, max_width = 200 } },
         win = {
           input = {
@@ -100,6 +99,11 @@ require('snacks').setup {
             },
           },
         },
+        include = {
+          '**/build/generated-sources',
+          '**/build/generated-specs',
+          '**/build/generated',
+        },
         exclude = {
           '**/.git/*',
           '**/node_modules',
@@ -109,7 +113,16 @@ require('snacks').setup {
           '**/.pnpm-store/*',
           '**/.idea',
           '**/.DS_Store',
-          '**/build',
+          '**/bin',
+          '**/build/classes',
+          '**/build/libs',
+          '**/build/reports',
+          '**/build/resources',
+          '**/build/spotless-clean',
+          '**/build/spotless-lints',
+          '**/build/spring-modulith-docs',
+          '**/build/test-results',
+          '**/build/tmp',
           'coverage/*',
           '**/dist',
           'hodor-types/*',
@@ -133,6 +146,11 @@ require('snacks').setup {
             },
           },
         },
+        include = {
+          '**/build/generated-sources',
+          '**/build/generated-specs',
+          '**/build/generated',
+        },
         exclude = {
           '**/.git/*',
           '**/node_modules',
@@ -144,7 +162,16 @@ require('snacks').setup {
           '**/.idea/*',
           '**/.DS_Store',
           '**/yarn.lock',
-          '**/build',
+          '**/bin',
+          '**/build/classes',
+          '**/build/libs',
+          '**/build/reports',
+          '**/build/resources',
+          '**/build/spotless-clean',
+          '**/build/spotless-lints',
+          '**/build/spring-modulith-docs',
+          '**/build/test-results',
+          '**/build/tmp',
           'coverage/*',
           'dist/*',
           'certificates/*',
@@ -172,6 +199,11 @@ require('snacks').setup {
         tree = true,
         watch = true,
 
+        include = {
+          '**/build/generated-sources',
+          '**/build/generated-specs',
+          '**/build/generated',
+        },
         exclude = {
           '.git',
           '.pnpm-store',
@@ -180,14 +212,24 @@ require('snacks').setup {
           '**/.node-gyp/**',
           '**/node_modules',
           '**/target',
-          '**/build',
+          '**/build/classes',
+          '**/build/libs',
+          '**/build/reports',
+          '**/build/resources',
+          '**/build/spotless-clean',
+          '**/build/spotless-lints',
+          '**/build/spring-modulith-docs',
+          '**/build/test-results',
+          '**/build/tmp',
           '**/dist',
           '**/bin',
         },
       },
 
       smart = {
-        filter = { cwd = true },
+        multi = { 'recent', 'files' },
+        format = 'file',
+        filter = { cwd = true, buf = true },
         layout = { preset = 'select', layout = { width = 0.7, max_width = 200 } },
       },
       recent = {
@@ -288,7 +330,7 @@ require('snacks').setup {
       enabled = true,
       char = '│',
       hl = 'SnacksIndentScope', -- distinct color from indent guides
-      underline = true, -- underline the opening line
+      underline = false, -- underline the opening line
       only_current = false,
     },
     animate = {
@@ -297,7 +339,7 @@ require('snacks').setup {
     chunk = {
       -- Draws a corner bracket at the start/end of the scope instead of
       -- a straight line — useful for seeing where a block closes
-      enabled = false, -- enable if you prefer bracket-style over underline
+      enabled = true, -- enable if you prefer bracket-style over underline
     },
   },
 
@@ -323,13 +365,13 @@ require('snacks').setup {
   notifier = {
     enabled = true,
     timeout = 3000,
-    style = 'compact', -- "compact" | "fancy" | "minimal"
+    style = 'fancy', -- "compact" | "fancy" | "minimal"
     top_down = false, -- notifications stack upward from the bottom
-    filter = function(notif)
-      local filter_jdtls_publish_diag = not (notif.title == 'jdtls' and notif.msg:find 'Publish Diagnostics')
-      local filter_lua_ls_publish_diag = not (notif.title == 'lua_ls' and notif.msg:find 'Processing')
-      return filter_jdtls_publish_diag and filter_lua_ls_publish_diag
-    end,
+    -- filter = function(notif)
+    --   local filter_jdtls_publish_diag = not (notif.title == 'jdtls' and notif.msg:find 'Publish Diagnostics')
+    --   local filter_lua_ls_publish_diag = not (notif.title == 'lua_ls' and notif.msg:find 'Processing')
+    --   return filter_jdtls_publish_diag and filter_lua_ls_publish_diag
+    -- end,
   },
 
   -- ── statuscolumn ─────────────────────────────────────────────────────
@@ -352,25 +394,14 @@ require('snacks').setup {
   -- Toggle a scratch buffer: Snacks.scratch()
   -- Pick among existing scratches: Snacks.scratch.select()
   scratch = { enabled = true },
+
+  terminal = {
+    win = {
+      style = 'terminal',
+    },
+  },
 }
 
 -- ── Keymaps ─────────────────────────────────────────────────────────────
-
--- bufdelete: replace :bd bindings with window-safe versions
-vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'delete buffer' })
-vim.keymap.set('n', '<leader>bD', function() Snacks.bufdelete { wipe = true } end, { desc = 'wipe buffer' })
-vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'delete other buffers' })
-
--- rename: LSP-aware file rename — updates all import references via
--- workspace/willRenameFiles, which jdtls supports.
--- Run this instead of shelling out to mv or using the OS file manager.
-vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = 'rename file (LSP)' })
-
--- scratch
-vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'scratch buffer' })
-vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = 'select scratch' })
-
--- notifier history (useful to review missed jdtls build messages)
-vim.keymap.set('n', '<leader>nh', function() Snacks.notifier.show_history() end, { desc = 'notification history' })
 
 -- Toggles are mapped under <leader>u* in config/keymaps.lua

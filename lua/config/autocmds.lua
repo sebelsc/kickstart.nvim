@@ -172,6 +172,11 @@ function M.setup()
       end
     end,
   })
+
+  -- Configure auto-read for files on specific events.
+  vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+    command = "if mode() != 'c' | checktime | endif",
+  })
 end
 
 return M

@@ -11,11 +11,7 @@ vim.pack.add {
 require 'plugins.tokyonight'
 
 vim.pack.add { 'https://github.com/nvim-tree/nvim-web-devicons', 'https://github.com/nvim-lualine/lualine.nvim' }
-require('lualine').setup {
-  options = {
-    themes = 'tokyonight-night',
-  },
-}
+require 'plugins.lualine'
 
 -- Highlight todo, notes, etc in comments
 vim.pack.add { 'https://github.com/folke/todo-comments.nvim' }
@@ -93,12 +89,14 @@ require 'plugins.completion'
 -- Mason
 vim.pack.add {
   'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/b0o/SchemaStore.nvim',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/mason-org/mason-lspconfig.nvim',
   'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
 }
 -- Automatically install LSPs and related tools to stdpath for Neovim
 require 'plugins.mason'
+require 'plugins.lspconfig'
 
 -- JAVA
 vim.pack.add {
@@ -112,9 +110,18 @@ vim.pack.add {
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-neotest/neotest',
   'https://github.com/rcasia/neotest-java',
+  'https://github.com/folke/trouble.nvim',
 }
 
 require 'plugins.java'
+require 'plugins.trouble'
+
+-- KOTLIN
+vim.pack.add {
+  'https://github.com/AlexandrosAlexiou/kotlin.nvim',
+}
+
+require 'plugins.kotlin'
 
 -- -- ── Tier 5: Testing ──────────────────────────────────────────────────────
 -- -- plenary and nvim-nio are neotest dependencies; they must be added first

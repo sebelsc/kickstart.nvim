@@ -99,6 +99,8 @@ do
   -- See `:help 'confirm'`
   vim.o.confirm = true
 
+  vim.opt.autoread = true
+
   -- ============================================================
   -- Snacks
   vim.g.snacks_words = true

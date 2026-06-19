@@ -68,6 +68,3 @@ require('config.keymaps').setup()
 -- ── 7. Diagnostics ───────────────────────────────────────────────────────
 require('config.diagnostics').setup()
 
--- ── 8. Highlights ────────────────────────────────────────────────────────
--- Semantic token overrides and colorscheme-dependent hl groups.
-require('config.highlights').setup()

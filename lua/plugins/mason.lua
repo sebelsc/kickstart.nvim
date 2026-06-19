@@ -38,3 +38,7 @@ for name, server in pairs(servers) do
   vim.lsp.config(name, server)
   vim.lsp.enable(name)
 end
+
+require("mason-lspconfig").setup {
+    automatic_enable = true
+}
