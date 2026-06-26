@@ -10,15 +10,6 @@
 -- (organize_imports, extract_*, test_class, DAP integration, etc.)
 -- vim.pack.add { 'https://codeberg.org/mfussenegger/nvim-jdtls' }
 
--- Make sure Mason installs the server, debug adapter, and test bundles.
--- (lombok.jar ships inside Mason's jdtls package, so no separate entry.)
--- This re-runs mason-tool-installer with the Java tools appended; harmless if
--- it overlaps with the list in your LSP section.
-local ok, mti = pcall(require, 'mason-tool-installer')
-if ok then mti.setup {
-  ensure_installed = { 'jdtls', 'java-debug-adapter', 'java-test' },
-} end
-
 -- Add nvim-neotest for better testing support
 -- vim.pack.add {
 --     --   'https://github.com/nvim-neotest/neotest',
@@ -34,13 +25,35 @@ require('spring_boot').setup {
 
 require 'nvim-treesitter'
 require('nvim-dap-virtual-text').setup {}
---
+
+local DefaultClasspathProvider = require 'neotest-java.core.spec_builder.compiler.classpath_provider'
+local compilers = require 'neotest-java.core.spec_builder.compiler'
+
+local default_provider = DefaultClasspathProvider { client_provider = compilers.client_provider }
+
+local gradle_folder_classpath_provider = {
+  get_classpath = function(base_dir, additional_entries)
+    local lsp_classpath = default_provider.get_classpath(base_dir, additional_entries)
+    local base = tostring(base_dir)
+
+    local patched = lsp_classpath
+      :gsub(vim.pesc(base .. '/bin/main'), base .. '/build/classes/java/main:' .. base .. '/build/resources/main')
+      :gsub(vim.pesc(base .. '/bin/test'), base .. '/build/classes/java/test:' .. base .. '/build/resources/test')
+      :gsub(vim.pesc(base .. '/bin/default'), base .. '/build/resources/test')
+
+    return patched
+  end,
+}
+
 require('neotest').setup {
+  quickfix = { enabled = true, open = true },
   adapters = {
-    require 'neotest-java' {
-      ignore_wrapper = false, -- use gradlew
-      log_level = vim.log.levels.DEBUG,
-    },
+    require 'neotest-java'({
+      -- ignore_wrapper = false, -- use gradlew
+      incremental_build = true,
+    }, {
+      classpath_provider = gradle_folder_classpath_provider,
+    }),
   },
 }
 

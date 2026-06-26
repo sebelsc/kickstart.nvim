@@ -11,9 +11,9 @@ local mason = vim.fn.stdpath 'data' .. '/mason/packages'
 -- matters: wrapper/build files win over .git so submodules in a Modulith
 -- monorepo don't collapse to the repo root.
 local root = vim.fs.root(0, {
+  '.git',
   'gradlew',
   'mvnw',
-  '.git',
 })
 if not root then return end
 local config_dir = vim.fn.stdpath 'data' .. '/mason' .. '/packages' .. '/jdtls' .. '/config_mac_arm'
@@ -111,6 +111,9 @@ local config = {
         },
         importOrder = { 'java', 'javax', 'jakarta', 'org', 'com' },
         filteredTypes = { 'com.sun.*', 'sun.*', 'jdk.*' },
+        postfix = {
+          enabled = true,
+        },
       },
 
       sources = {

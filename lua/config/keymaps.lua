@@ -55,8 +55,15 @@ local function setup_core()
   vim.keymap.set('n', '<Esc>', '<cmd>noh<CR><Esc>', { desc = 'clear hlsearch', silent = true })
 
   -- Better paste: do not overwrite unnamed register when pasting over selection
-  vim.keymap.set('x', 'p', '"_dP', { desc = 'paste without clobber', silent = true })
+  for _, op in ipairs { 'd', 'D', 'c', 'C', 'x', 'X' } do
+    vim.keymap.set({ 'n', 'x' }, op, ('"d%s'):format(op), { silent = true })
+  end
 
+  vim.keymap.set('x', 'p', '"_dP', { desc = 'paste without clobber', silent = true })
+  vim.keymap.set('x', 'P', '"_dP', {})
+  vim.keymap.set('n', '<leader>rs', function() Snacks.picker.registers() end, { desc = '[r]egisters [s]how', silent = true })
+  vim.keymap.set('n', '<leader>rp', '"dp', { desc = '[r]egister [p]aste (delete register)' })
+  vim.keymap.set('n', '<leader>rP', '"dP', { desc = '[r]egister [P]aste (delete register)' })
   -- Move selected lines up or down
   vim.keymap.set('v', '<S-K>', ":m '<-2<CR>gv=gv", { desc = 'move selected line up', silent = true })
   vim.keymap.set('v', '<S-J>', ":m '>+1<CR>gv=gv", { desc = 'move selected line down', silent = true })
@@ -119,7 +126,7 @@ local function setup_core()
     function() require('nvim-treesitter-textobjects.swap').swap_previous '@parameter.inner' end,
     { desc = '[C]ode [P]rev arg', silent = true }
   )
-  vim.keymap.set('n', '<leader>cq', function() Snacks.picker.qflist() end, { desc = '[C]ode [Q]uickfix', silent = true })
+  vim.keymap.set('n', '<leader>cq', function() Snacks.picker.qflist() end, { desc = '[c]ode [q]uickfix', silent = true })
 
   -- ── Inspect (<leader>i) ───────────────────────────────────────────
 
@@ -157,24 +164,40 @@ local function setup_core()
     Snacks.notify(table.concat(lines, '\n'), { title = 'Inspect', timeout = 30000 })
   end, { desc = 'Inspect highlights' })
 
-  -- ── UI toggles (<leader>u) ───────────────────────────────────────────
+  -- ── Git (<leader>g) ───────────────────────────────────────────
   vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit() end, { desc = '[g]it [l]azy', silent = true })
+  vim.keymap.set('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = '[g]it log [f]ile', silent = true })
+  vim.keymap.set('n', '<leader>gs', function() Snacks.picker.git_status() end, { desc = '[g]it [s]tatus', silent = true })
+  vim.keymap.set('n', '<leader>gdd', function() Snacks.picker.git_diff() end, { desc = '[g]it [d]iff', silent = true })
+  -- Diff current file vs index (unstaged changes)
+  vim.keymap.set('n', '<leader>gdD', '<cmd>DiffviewOpen -- %<CR>', { desc = 'Diff file vs index' })
+  -- Diff current file vs origin/main (changes since branching)
+  -- vim.keymap.set('n', '<leader>gdd', '<cmd>DiffviewOpen origin/main...HEAD -- %<CR>', { desc = 'Diff file vs main' })
+  -- File history for current file
+  vim.keymap.set('n', '<leader>gdh', '<cmd>DiffviewFileHistory %<CR>', { desc = 'File history' })
+  -- Full repo history
+  vim.keymap.set('n', '<leader>gdH', '<cmd>DiffviewFileHistory<CR>', { desc = 'Repo history' })
+  -- Close
+  vim.keymap.set('n', '<leader>gdq', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview' })
 
-  -- ── UI toggles (<leader>u) ───────────────────────────────────────────
+  -- ── UI (<leader>u) ───────────────────────────────────────────
   local toggle = Snacks.toggle
-  toggle.diagnostics():map('<leader>utd', { desc = '[u]i [d]iagnostics' })
-  toggle.inlay_hints():map('<leader>uti', { desc = '[u]i [i]nlay hints' })
-  -- toggle.treesitter():map('<leader>ut', { desc = '[U]I [T]reesitter' })
-  -- toggle.option('relativenumber'):map('<leader>ur', { desc = '[U]I [R]elative numbers' })
-  toggle.option('wrap'):map('<leader>utw', { desc = '[u]i [w]rap' })
-  -- toggle.option('spell'):map('<leader>us', { desc = '[U]I [S]pell' })
-  toggle.diagnostics({ virtual_text = true }):map('<leader>utv', { desc = '[u]i [v]irtual text' })
+  toggle.diagnostics():map('<leader>utd', { desc = '[u]i [t]oggle [d]iagnostics' })
+  toggle.inlay_hints():map('<leader>uti', { desc = '[u]i [t]oggle [i]nlay hints' })
+  -- toggle.treesitter():map('<leader>utt', { desc = '[u]i [t]oggle [t]reesitter' })
+  -- toggle.option('relativenumber'):map('<leader>utr', { desc = '[u]i [t]oggle [r]elative numbers' })
+  toggle.option('wrap'):map('<leader>utw', { desc = '[u]i [t]oggle [w]rap' })
+  -- toggle.option('spell'):map('<leader>uts', { desc = '[u]i [t]oggle [s]pell' })
+  toggle.diagnostics({ virtual_text = true }):map('<leader>utv', { desc = '[u]i [t]oggle [v]irtual text' })
   vim.keymap.set('n', '<leader>uso', function() Snacks.terminal() end, { desc = '[u]i [s]hell [o]pen', silent = true })
   vim.keymap.set('t', '<C-t>', function() Snacks.terminal() end) -- toggle from terminal mode too
-  vim.keymap.set('n', '<leader>unh', function() Snacks.notifier.show_history() end, { desc = '[u]i [n]otify [h]istory', silent = true })
+  vim.keymap.set('n', '<leader>unh', function() Snacks.notifier.show_history() end, { desc = '[u]i [n]otification [h]istory', silent = true })
+
+  -- ── UI-Undo (<leader>uu) ───────────────────────────────────────────
+  vim.keymap.set('n', '<leader>uu', require('undotree').toggle, { desc = '[u]i [u]ndotree (toggle)', noremap = true, silent = true })
 
   -- ── Jumps (<leader>j) ───────────────────────────────────────────
-  vim.keymap.set({ 'n', 'x', 'o' }, '<leader>jj', function() require('flash').jump() end, { desc = 'Flash', silent = true })
+  vim.keymap.set({ 'n', 'x', 'o' }, '<leader>jj', function() require('flash').jump() end, { desc = '[j]ump', silent = true })
   vim.keymap.set({ 'n', 'x', 'o' }, '<leader>jJ', function() require('flash').treesitter() end, { desc = 'Flash Treesitter', silent = true })
 
   -- ── Diagnostic navigation ────────────────────────────────────────────
@@ -218,21 +241,21 @@ local function setup_core()
 
   -- Buffers <leader>b
   -- bufdelete: replace :bd bindings with window-safe versions
-  vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = '[d]elete [b]uffer' })
-  vim.keymap.set('n', '<leader>bD', function() Snacks.bufdelete { wipe = true } end, { desc = 'wipe buffer' })
-  vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'delete other buffers' })
+  vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = '[b]uffer [d]elete' })
+  vim.keymap.set('n', '<leader>bW', function() Snacks.bufdelete { wipe = true } end, { desc = '[b]uffer [W]ipe' })
+  vim.keymap.set('n', '<leader>bO', function() Snacks.bufdelete.other() end, { desc = '[b]uffer delete [O]thers' })
 
   -- rename: LSP-aware file rename — updates all import references via
   -- workspace/willRenameFiles, which jdtls supports.
   -- Run this instead of shelling out to mv or using the OS file manager.
-  vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = 'rename file (LSP)' })
+  vim.keymap.set('n', '<leader>fr', function() Snacks.rename.rename_file() end, { desc = '[f]ile [r]ename (lsp)' })
 
   -- scratch
-  vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = 'scratch buffer' })
-  vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = 'select scratch' })
+  vim.keymap.set('n', '<leader>bs', function() Snacks.scratch() end, { desc = '[b]uffer [s]cratch' })
+  vim.keymap.set('n', '<leader>bS', function() Snacks.scratch.select() end, { desc = '[b]uffer [S]elect scratch' })
 
   -- notifier history (useful to review missed jdtls build messages)
-  vim.keymap.set('n', '<leader>nh', function() Snacks.notifier.show_history() end, { desc = 'notification history' })
+  vim.keymap.set('n', '<leader>nh', function() Snacks.notifier.show_history() end, { desc = '[n]otification [h]istory' })
 
   -- Terminal <leader>t
   -- In your keymaps or snacks config
@@ -244,27 +267,27 @@ end
 
 function M.on_lsp_attach(bufnr, client)
   -- Navigation                                               [OVERRIDE: gd, gr]
-  vim.keymap.set('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = '[G]oto [D]efinition', buffer = bufnr, silent = true })
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration', buffer = bufnr, silent = true })
-  vim.keymap.set('n', 'gi', function() Snacks.picker.lsp_implementations() end, { desc = '[G]oto [I]mplementation', buffer = bufnr, silent = true })
-  vim.keymap.set('n', 'gr', function() Snacks.picker.lsp_references() end, { desc = '[G]oto [R]eferences', buffer = bufnr, silent = true })
-  vim.keymap.set('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { desc = '[G]oto [Y]type', buffer = bufnr, silent = true })
+  vim.keymap.set('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = '[g]oto [d]efinition', buffer = bufnr, silent = true })
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = '[g]oto [D]eclaration', buffer = bufnr, silent = true })
+  vim.keymap.set('n', 'gi', function() Snacks.picker.lsp_implementations() end, { desc = '[g]oto [i]mplementation', buffer = bufnr, silent = true })
+  vim.keymap.set('n', 'gr', function() Snacks.picker.lsp_references() end, { desc = '[g]oto [r]eferences', buffer = bufnr, silent = true })
+  vim.keymap.set('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { desc = '[g]oto t[y]pe', buffer = bufnr, silent = true })
 
   -- Symbols, references, calls (search group)
-  vim.keymap.set('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = '[S]earch [S]ymbols', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = '[s]earch [s]ymbols', buffer = bufnr, silent = true })
   vim.keymap.set(
     'n',
     '<leader>sS',
     function() Snacks.picker.lsp_workspace_symbols() end,
-    { desc = '[S]earch [S]ymbols workspace', buffer = bufnr, silent = true }
+    { desc = '[s]earch [S]ymbols workspace', buffer = bufnr, silent = true }
   )
-  vim.keymap.set('n', '<leader>sr', function() Snacks.picker.lsp_references() end, { desc = '[S]earch [R]eferences', buffer = bufnr, silent = true })
-  vim.keymap.set('n', '<leader>si', function() Snacks.picker.lsp_incoming_calls() end, { desc = '[S]earch [I]ncoming calls', buffer = bufnr, silent = true })
-  vim.keymap.set('n', '<leader>so', function() Snacks.picker.lsp_outgoing_calls() end, { desc = '[S]earch [O]utgoing calls', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>sr', function() Snacks.picker.lsp_references() end, { desc = '[s]earch [r]eferences', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>si', function() Snacks.picker.lsp_incoming_calls() end, { desc = '[s]earch [i]ncoming calls', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>so', function() Snacks.picker.lsp_outgoing_calls() end, { desc = '[s]earch [o]utgoing calls', buffer = bufnr, silent = true })
 
   -- Diagnostics pickers (search group)
-  vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics_buffer() end, { desc = '[S]earch [D]iagnostics', buffer = bufnr, silent = true })
-  vim.keymap.set('n', '<leader>sD', function() Snacks.picker.diagnostics() end, { desc = '[S]earch [D]iagnostics workspace', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics_buffer() end, { desc = '[s]earch [d]iagnostics', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>sD', function() Snacks.picker.diagnostics() end, { desc = '[s]earch [D]iagnostics workspace', buffer = bufnr, silent = true })
 
   -- Hover / signature                                        [OVERRIDE: K]
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'hover doc', buffer = bufnr, silent = true })
@@ -272,16 +295,21 @@ function M.on_lsp_attach(bufnr, client)
   vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { desc = 'signature help', buffer = bufnr, silent = true }) -- [OVERRIDE: digraph]
 
   -- Actions (code group)
-  vim.keymap.set({ 'n', 'x' }, '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ction', buffer = bufnr, silent = true })
-  vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = '[C]ode [R]ename', buffer = bufnr, silent = true })
-  vim.keymap.set({ 'n', 'x' }, '<leader>cf', function() vim.lsp.buf.format { async = true } end, { desc = '[C]ode [F]ormat', buffer = bufnr, silent = true })
+  vim.keymap.set({ 'n', 'x' }, '<leader>ca', vim.lsp.buf.code_action, { desc = '[c]ode [a]ction', buffer = bufnr, silent = true })
+  vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = '[c]ode [r]ename', buffer = bufnr, silent = true })
+  vim.keymap.set(
+    { 'n', 'x', 'v' },
+    '<leader>cf',
+    function() require('conform').format { async = true } end,
+    { desc = '[c]ode [f]ormat', buffer = bufnr, silent = true }
+  )
 
   vim.keymap.set('n', ']w', function() Snacks.words.jump(1, true) end)
   vim.keymap.set('n', '[w', function() Snacks.words.jump(-1, true) end)
 
   -- Code lens (code group)
   if client and client.server_capabilities.codeLensProvider then
-    vim.keymap.set('n', '<leader>cl', vim.lsp.codelens.run, { desc = '[C]ode [L]ens', buffer = bufnr, silent = true })
+    vim.keymap.set('n', '<leader>cl', vim.lsp.codelens.run, { desc = '[c]ode [l]ens', buffer = bufnr, silent = true })
   end
 end
 
@@ -294,11 +322,14 @@ local function setup_whichkey()
     { '<leader>c', group = '[c]ode' },
     { '<leader>f', group = '[f]ile' },
     { '<leader>g', group = '[g]it', mode = { 'n', 'v' } },
+    { '<leader>gd', group = '[g]it [d]iffview', mode = { 'n' } },
     { '<leader>i', group = '[i]nspect', mode = { 'n' } },
     { '<leader>j', group = '[j]ump', mode = { 'n', 'v' } },
+    { '<leader>p', group = '[p]aste', mode = { 'n' } },
     { '<leader>s', group = '[s]earch' },
     { '<leader>t', group = '[t]est' },
     { '<leader>u', group = '[u]i' },
+    { '<leader>ut', group = '[u]i [t]oggle' },
 
     { ']', group = 'Next', mode = { 'n', 'x', 'o' } },
     { '[', group = 'Prev', mode = { 'n', 'x', 'o' } },

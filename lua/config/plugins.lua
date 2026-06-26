@@ -6,9 +6,12 @@
 vim.pack.add {
   { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' },
   { src = 'https://github.com/folke/tokyonight.nvim', name = 'tokyonight' },
+  { src = 'https://github.com/olimorris/onedarkpro.nvim', name = 'onedarkpro' },
 }
 
-require 'plugins.tokyonight'
+require 'plugins.catppuccin'
+-- require 'plugins.tokyonight'
+-- require 'plugins.onedarkpro'
 
 vim.pack.add { 'https://github.com/nvim-tree/nvim-web-devicons', 'https://github.com/nvim-lualine/lualine.nvim' }
 require 'plugins.lualine'
@@ -103,6 +106,7 @@ vim.pack.add {
   'https://codeberg.org/mfussenegger/nvim-jdtls',
   'https://github.com/JavaHello/spring-boot.nvim',
   'https://github.com/ibhagwan/fzf-lua',
+  'https://github.com/antoinemadec/FixCursorHold.nvim',
   'https://codeberg.org/mfussenegger/nvim-dap',
   'https://github.com/thehamsta/nvim-dap-virtual-text',
   'https://github.com/nvim-neotest/nvim-nio',
@@ -130,6 +134,8 @@ require 'plugins.kotlin'
 -- require("neotest").setup(require("plugins.neotest"))
 
 -- -- ── Tier 6: Everything else ───────────────────────────────────────────────
+vim.pack.add { { src = 'https://github.com/j-hui/fidget.nvim', version = vim.version.range '*' } }
+require 'plugins.fidget'
 
 vim.pack.add { { src = 'https://github.com/sindrets/diffview.nvim', version = 'main' } }
 require 'plugins.diffview'
@@ -139,3 +145,15 @@ require 'plugins.oil'
 
 vim.pack.add { 'https://github.com/folke/flash.nvim' }
 require('plugins.flash').setup()
+
+vim.pack.add { 'https://github.com/rachartier/tiny-inline-diagnostic.nvim' }
+require 'plugins.tiny-inline-diagnostic'
+
+vim.pack.add { 'https://github.com/jiaoshijie/undotree' }
+require 'plugins.undotree'
+
+vim.pack.add { 'https://github.com/kosayoda/nvim-lightbulb' }
+require 'plugins.lightbulb'
+
+vim.pack.add { 'https://github.com/felpafel/inlay-hint.nvim' }
+require 'plugins.inlay-hint'

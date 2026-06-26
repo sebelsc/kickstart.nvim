@@ -45,7 +45,15 @@ require('snacks').setup {
 
   picker = {
     enabled = true,
+    live = true,
     focus = 'input',
+    auto_confirm = true,
+    matcher = {
+      filename_bonus = true,
+      fuzzy = true,
+      ignorecase = true,
+      smartcase = true,
+    },
     layouts = {
       ivy_narrow_preview = {
         layout = {
@@ -248,18 +256,45 @@ require('snacks').setup {
       },
 
       lsp_definitions = { layout = { preset = 'dropdown' } },
-      lsp_implementations = { layout = { preset = 'ivy' } },
+      lsp_implementations = { layout = { preset = 'dropdown' } },
       lsp_references = { layout = { preset = 'ivy' } },
       lsp_incoming_calls = { layout = { preset = 'ivy' } },
       lsp_outgoing_calls = { layout = { preset = 'ivy' } },
       lsp_symbols = {
+        live = true,
         layout = {
-          preset = 'dropdown',
+          preset = 'select',
         },
       },
       lsp_workspace_symbols = { layout = { preset = 'dropdown' } },
-      diagnostics = { layout = { preset = 'ivy' } },
+      diagnostics = {
+        layout = { preset = 'ivy' },
+        filter = {
+          cwd = true,
+          filter = function(item, filter)
+            return not item.file:match '/generated[^/]*/'
+              and not item.file:match '/build/'
+              and not item.file:match '/bin/'
+              and not item.file:match '/node_modules/'
+              and not item.file:match '/target/'
+              and not item.file:match '/.gradle/'
+              and not item.file:match '/.idea/'
+          end,
+        },
+      },
       diagnostics_buffer = {
+        filter = {
+          cwd = true,
+          filter = function(item, filter)
+            return not item.file:match '/generated[^/]*/'
+              and not item.file:match '/build/'
+              and not item.file:match '/bin/'
+              and not item.file:match '/node_modules/'
+              and not item.file:match '/target/'
+              and not item.file:match '/.gradle/'
+              and not item.file:match '/.idea/'
+          end,
+        },
         layout = {
           layout = {
             { border = 'bottom', height = 1, win = 'input' },
@@ -339,7 +374,7 @@ require('snacks').setup {
     chunk = {
       -- Draws a corner bracket at the start/end of the scope instead of
       -- a straight line — useful for seeing where a block closes
-      enabled = true, -- enable if you prefer bracket-style over underline
+      enabled = false, -- enable if you prefer bracket-style over underline
     },
   },
 

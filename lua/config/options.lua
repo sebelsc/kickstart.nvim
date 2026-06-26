@@ -105,6 +105,21 @@ do
   -- Snacks
   vim.g.snacks_words = true
 
+  -- GUI
+
+  vim.o.guifont = 'Maple Mono Normal NF:h15'
+  vim.opt.linespace = 1
+
+  -- Diagnostics
+  vim.diagnostic.config {
+    virtual_text = false,
+    update_in_insert = false,
+  }
+
+  -- LSPs
+  vim.lsp.config('jdtls', {
+    flags = { debounce_text_change = 500 },
+  })
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 

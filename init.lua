@@ -66,5 +66,4 @@ require('config.autocmds').setup()
 require('config.keymaps').setup()
 
 -- ── 7. Diagnostics ───────────────────────────────────────────────────────
-require('config.diagnostics').setup()
-
+-- require('config.diagnostics').setup()

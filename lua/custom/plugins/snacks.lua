@@ -42,6 +42,12 @@ require('snacks').setup {
     layout = {
       preset = 'select',
     },
+    matcher = {
+      filename_bonus = true,
+      fuzzy = true,
+      ignorecase = true,
+      smartcase = true,
+    },
     formatters = {
       file = {
         filename_first = true,
