@@ -120,6 +120,14 @@ do
   vim.lsp.config('jdtls', {
     flags = { debounce_text_change = 500 },
   })
+  if vim.g.neovide then
+    vim.o.guifont = 'Maple Mono Normal NF:h14'
+    vim.opt.linespace = 1
+    vim.g.neovide_cursor_short_animation_length = 0
+    vim.g.neovide_cursor_animation_length = 0.100
+    vim.g.neovide_cursor_trail_size = 0.6
+    vim.g.neovide_cursor_animate_in_insert_mode = false
+  end
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 

@@ -7,11 +7,15 @@ vim.pack.add {
   { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' },
   { src = 'https://github.com/folke/tokyonight.nvim', name = 'tokyonight' },
   { src = 'https://github.com/olimorris/onedarkpro.nvim', name = 'onedarkpro' },
+  { src = 'https://github.com/scottmckendry/cyberdream.nvim', name = 'cyberdream', version = vim.version.range '*' },
+  { src = 'https://github.com/AlexvZyl/nordic.nvim', name = 'nordic', version = vim.version.range '*' },
 }
 
-require 'plugins.catppuccin'
+-- require 'plugins.catppuccin'
 -- require 'plugins.tokyonight'
 -- require 'plugins.onedarkpro'
+require 'plugins.cyberdream'
+-- require 'plugins.nordic'
 
 vim.pack.add { 'https://github.com/nvim-tree/nvim-web-devicons', 'https://github.com/nvim-lualine/lualine.nvim' }
 require 'plugins.lualine'

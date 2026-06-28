@@ -1,6 +1,6 @@
 require('lualine').setup {
   options = {
-    themes = 'catpuccin',
+    themes = 'auto',
   },
   extensions = {
     'trouble',

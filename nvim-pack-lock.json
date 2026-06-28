@@ -26,6 +26,11 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "cyberdream": {
+      "rev": "b9cc88378b776f33d3ea77164716f37c3f13ef72",
+      "src": "https://github.com/scottmckendry/cyberdream.nvim",
+      "version": ">=0.0.0"
+    },
     "diffview.nvim": {
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim",
@@ -92,6 +97,10 @@
       "rev": "c248713d3530710f67ec804cfbdfcd5b02b19dee",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
+    "neo-tree.nvim": {
+      "rev": "b01ee1769144c4491ea44bc329cb84040e9793be",
+      "src": "https://github.com/nvim-neo-tree/neo-tree.nvim"
+    },
     "neotest": {
       "rev": "ad991822b7076b1d940b33a9d6d0d30416d5df81",
       "src": "https://github.com/nvim-neotest/neotest"
@@ -99,6 +108,11 @@
     "neotest-java": {
       "rev": "78d236da986cca4dd95cb10b1250c4c6e1508240",
       "src": "https://github.com/rcasia/neotest-java"
+    },
+    "nordic": {
+      "rev": "4ce6bad95fde832f9bd10b991de846047a144628",
+      "src": "https://github.com/AlexvZyl/nordic.nvim",
+      "version": ">=0.0.0"
     },
     "nui.nvim": {
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
@@ -158,6 +172,10 @@
     "nvim-treesitter-context": {
       "rev": "b311b30818951d01f7b4bf650521b868b3fece16",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
+    },
+    "nvim-treesitter-refactor": {
+      "rev": "9cc0d22becf72e18808208cd0ce85032a2b19c6f",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-refactor"
     },
     "nvim-treesitter-textobjects": {
       "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
@@ -231,6 +249,10 @@
     "undotree": {
       "rev": "02b69aed427b848c4dca483fc5e9524b6019c296",
       "src": "https://github.com/jiaoshijie/undotree"
+    },
+    "vim-go": {
+      "rev": "f4b4ba17035aebcd222df90375c1cbb1dc4d8c5b",
+      "src": "https://github.com/fatih/vim-go"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
