@@ -98,8 +98,12 @@ require('catppuccin').setup {
   styles = {
     comments = { 'italic' },
     conditionals = { 'italic' },
+    loops = { 'italic' },
+    keywords = { 'bold', 'italic' },
+    operators = { 'bold' },
   },
   lsp_styles = {
+
     virtual_text = {
       errors = { 'bold', 'underdouble' },
     },
@@ -107,9 +111,15 @@ require('catppuccin').setup {
       background = false,
     },
   },
-
+  custom_highlights = function(colors)
+    return {
+      YankHighlight = { bg = colors.flamingo, fg = colors.base, style = { 'bold' } },
+      NormalFloat = { bg = colors.base },
+      FloatBorder = { fg = colors.overlay0, bg = colors.base },
+    }
+  end,
   -- Custom highlight overrides using the Mocha palette.
-  -- `colors` is the full palette table; use it to keep overrides
+  -- `colors` is the full palette table; use it to keep override
   -- palette-relative rather than hard-coding hex values.
   -- custom_highlights = function(colors)
   --   return {

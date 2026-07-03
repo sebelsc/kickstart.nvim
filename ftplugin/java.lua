@@ -50,6 +50,9 @@ local config = {
     '--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false',
   },
   root_dir = root,
+  flags = {
+    debounce_text_changes = 2000,
+  },
   capabilities = require('blink.cmp').get_lsp_capabilities(),
   init_options = { bundles = bundles },
   settings = {
@@ -119,6 +122,9 @@ local config = {
       sources = {
         organizeImports = { starThreshold = 9999, staticStarThreshold = 9999 },
       },
+      -- edit = {
+      --   validateAllOpenBuffersOnChanges = false,
+      -- },
     },
   },
 

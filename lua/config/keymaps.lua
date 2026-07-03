@@ -96,11 +96,11 @@ local function setup_core()
 
   -- ── Search / Snacks picker (<leader>s) ───────────────────────────────
   -- Bare shortcuts — quick access without opening the group menu
-  vim.keymap.set('n', '<leader><space>', function() Snacks.picker.smart() end, { desc = 'Recent Files', silent = true })
+  vim.keymap.set('n', '<leader><space>', function() Snacks.picker.buffers() end, { desc = 'Recent Files', silent = true })
   vim.keymap.set('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep', silent = true })
   vim.keymap.set('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers', silent = true })
 
-  vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = '[s]earch [f]iles', silent = true })
+  vim.keymap.set('n', '<leader>sf', function() Snacks.picker.smart() end, { desc = '[s]earch [f]iles', silent = true })
   vim.keymap.set('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = '[s]earch [g]rep', silent = true })
   vim.keymap.set('n', '<leader>sb', function() Snacks.picker.buffers() end, { desc = '[s]earch [b]uffers', silent = true })
   vim.keymap.set('n', '<leader>sc', function() Snacks.picker.command_history() end, { desc = '[s]earch [c]ommands', silent = true })
@@ -189,9 +189,11 @@ local function setup_core()
   toggle.option('wrap'):map('<leader>utw', { desc = '[u]i [t]oggle [w]rap' })
   -- toggle.option('spell'):map('<leader>uts', { desc = '[u]i [t]oggle [s]pell' })
   toggle.diagnostics({ virtual_text = true }):map('<leader>utv', { desc = '[u]i [t]oggle [v]irtual text' })
+  vim.keymap.set('n', '<leader>utgw', require('gitsigns').toggle_word_diff, { desc = '[u]i [t]oggle [g]it [w]ords', silent = true })
   vim.keymap.set('n', '<leader>uso', function() Snacks.terminal() end, { desc = '[u]i [s]hell [o]pen', silent = true })
   vim.keymap.set('t', '<C-t>', function() Snacks.terminal() end) -- toggle from terminal mode too
   vim.keymap.set('n', '<leader>unh', function() Snacks.notifier.show_history() end, { desc = '[u]i [n]otification [h]istory', silent = true })
+  vim.keymap.set('n', '<leader>uz', function() Snacks.zen() end, { desc = '[u]i [z]en mode', silent = true })
 
   -- ── UI-Undo (<leader>uu) ───────────────────────────────────────────
   vim.keymap.set('n', '<leader>uu', require('undotree').toggle, { desc = '[u]i [u]ndotree (toggle)', noremap = true, silent = true })
@@ -259,6 +261,12 @@ local function setup_core()
 
   -- Terminal <leader>t
   -- In your keymaps or snacks config
+
+  -- MINI keymaps
+  vim.keymap.set('n', '<M-s>', '<Cmd>silent! update | redraw<CR>', { desc = '[f]ile [s]ave' })
+  vim.keymap.set({ 'i', 'x' }, '<M-s>', '<Esc><Cmd>silent! update | redraw<CR>', { desc = '[f]ile [s]ave' })
+  vim.keymap.set('n', '<M-S>', '<Cmd>silent! wa | redraw<CR>', { desc = '[f]ile [S]ave all' })
+  vim.keymap.set({ 'i', 'x' }, '<M-S>', '<Esc><Cmd>silent! wa | redraw<CR>', { desc = '[f]ile [S]ave all' })
 end
 
 -- ── LSP keymaps (buffer-local) ───────────────────────────────────────────
@@ -301,7 +309,13 @@ function M.on_lsp_attach(bufnr, client)
     { 'n', 'x', 'v' },
     '<leader>cf',
     function() require('conform').format { async = true } end,
-    { desc = '[c]ode [f]ormat', buffer = bufnr, silent = true }
+    { desc = '[c]ode [f]ormat', buf = bufnr, silent = true }
+  )
+  vim.keymap.set(
+    { 'n', 'x', 'v' },
+    '<M-f>',
+    function() require('conform').format { async = true } end,
+    { desc = '[f]ormat buffer', buf = bufnr, silent = true }
   )
 
   vim.keymap.set('n', ']w', function() Snacks.words.jump(1, true) end)
@@ -326,10 +340,13 @@ local function setup_whichkey()
     { '<leader>i', group = '[i]nspect', mode = { 'n' } },
     { '<leader>j', group = '[j]ump', mode = { 'n', 'v' } },
     { '<leader>p', group = '[p]aste', mode = { 'n' } },
+    { '<leader>r', group = '[r]egister', mode = { 'n' } },
     { '<leader>s', group = '[s]earch' },
     { '<leader>t', group = '[t]est' },
     { '<leader>u', group = '[u]i' },
+    { '<leader>us', group = '[u]i [s]hell' },
     { '<leader>ut', group = '[u]i [t]oggle' },
+    { '<leader>utg', group = '[u]i [t]oggle [g]it' },
 
     { ']', group = 'Next', mode = { 'n', 'x', 'o' } },
     { '[', group = 'Prev', mode = { 'n', 'x', 'o' } },

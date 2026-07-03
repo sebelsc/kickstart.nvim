@@ -3,7 +3,7 @@ require('cyberdream').setup {
   variant = 'default', -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
 
   -- Enable transparent background
-  transparent = true,
+  transparent = false,
 
   -- Reduce the overall saturation of colours for a more muted look
   saturation = 0.6, -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)

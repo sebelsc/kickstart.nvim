@@ -18,6 +18,9 @@ do
   vim.o.softtabstop = 4
   vim.o.shiftwidth = 4
 
+  -- Set border for floats, hover, signature help etc
+  vim.o.winborder = 'rounded'
+
   -- [[ Setting options ]]
   --  See `:help vim.o`
   -- NOTE: You can change these options as you wish!
@@ -45,6 +48,10 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
+  -- Don't show cursor coordinates
+  vim.o.ruler = false
+
+  vim.o.colorcolumn = '+1'
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
@@ -90,6 +97,7 @@ do
 
   -- Show which line your cursor is on
   vim.o.cursorline = true
+  vim.o.cursorlineopt = 'screenline,number'
 
   -- Minimal number of screen lines to keep above and below the cursor.
   vim.o.scrolloff = 10
@@ -116,18 +124,53 @@ do
     update_in_insert = false,
   }
 
-  -- LSPs
-  vim.lsp.config('jdtls', {
-    flags = { debounce_text_change = 500 },
-  })
+  -- GUI
   if vim.g.neovide then
-    vim.o.guifont = 'Maple Mono Normal NF:h14'
+    vim.o.guifont = 'Maple Mono Normal NF:h15'
     vim.opt.linespace = 1
     vim.g.neovide_cursor_short_animation_length = 0
     vim.g.neovide_cursor_animation_length = 0.100
     vim.g.neovide_cursor_trail_size = 0.6
     vim.g.neovide_cursor_animate_in_insert_mode = false
+    vim.g.neovide_remember_window_size = true
+    vim.g.neovide_macos_simple_fullscreen = false
+    vim.g.neovide_hide_mouse_when_typing = true
+    vim.g.neovide_theme = 'bg_color'
+    vim.g.neovide_input_macos_option_key_is_meta = 'only_left'
+
+    vim.g.neovide_padding_top = 10
+    vim.g.neovide_padding_bottom = 10
+    vim.g.neovide_padding_right = 15
+    vim.g.neovide_padding_left = 15
   end
+
+  -- UI2
+  require('vim._core.ui2').enable {
+    enable = true, -- Whether to enable or disable the UI.
+    msg = { -- Options related to the message module.
+      ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
+      ---or table mapping |ui-messages| kinds, triggers and IDs to a target.
+      ---Table keys are are matched as a Lua pattern to the message ID. 'default'
+      ---mapping applies to any omitted kind: { default = 'cmd', progress = 'msg' }.
+      targets = 'cmd',
+      cmd = { -- Options related to messages in the cmdline window.
+        -- Maximum height (rows if >=1, or % of 'lines' if <1) of messages expanded
+        -- beyond 'cmdheight'; 0.999 for full height.
+        height = 0.5,
+      },
+      dialog = { -- Options related to dialog window.
+        height = 0.5, -- Maximum height.
+      },
+      msg = { -- Options related to msg window.
+        height = 0.5, -- Maximum height.
+        timeout = 4000, -- Time a message is visible in the message window.
+      },
+      pager = { -- Options related to message window.
+        height = 0.999, -- Maximum height.
+      },
+    },
+  }
+
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 

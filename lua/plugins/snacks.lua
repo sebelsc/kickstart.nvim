@@ -1,24 +1,31 @@
 require('snacks').setup {
+  styles = {
+    notification = {
+      wo = {
+        wrap = true,
+      },
+    },
+  },
   -- ── bufdelete ────────────────────────────────────────────────────────
-  -- Replaces :bd / :bw. Critically: does NOT close the window when deleting
-  -- a buffer. Falls back to the alternate buffer (#), then last used —
+  -- replaces :bd / :bw. critically: does not close the window when deleting
+  -- a buffer. falls back to the alternate buffer (#), then last used —
   -- exactly the idiomatic buffer navigation model we discussed.
-  -- No config needed; just use the API.
+  -- no config needed; just use the api.
 
   -- ── bigfile ──────────────────────────────────────────────────────────
-  -- Replaces the manual `disable = function()` size guard in treesitter.
-  -- Automatically disables: treesitter, LSP completion, statuscolumn,
+  -- replaces the manual `disable = function()` size guard in treesitter.
+  -- automatically disables: treesitter, lsp completion, statuscolumn,
   -- foldexpr, and syntax highlighting when a file exceeds the threshold.
   bigfile = {
     enabled = true,
-    size = 1.5 * 1024 * 1024, -- 1.5 MB (default)
-    -- Custom handler: extend defaults with anything specific to your setup
+    size = 1.5 * 1024 * 1024, -- 1.5 mb (default)
+    -- custom handler: extend defaults with anything specific to your setup
     setup = function(ctx)
-      -- Disable jdtls semantic tokens for huge generated files
+      -- disable jdtls semantic tokens for huge generated files
       vim.b[ctx.buf].completion = false
       vim.schedule(function()
         if vim.api.nvim_buf_is_valid(ctx.buf) then
-          -- Fall back to regex syntax so the file is still readable
+          -- fall back to regex syntax so the file is still readable
           vim.bo[ctx.buf].syntax = ctx.ft
         end
       end)
@@ -45,7 +52,6 @@ require('snacks').setup {
 
   picker = {
     enabled = true,
-    live = true,
     focus = 'input',
     auto_confirm = true,
     matcher = {
@@ -77,7 +83,7 @@ require('snacks').setup {
     win = {
       input = {
         keys = {
-          ['<Esc>'] = { 'close', mode = { 'i', 'n' } },
+          ['<esc>'] = { 'close', mode = { 'i', 'n' } },
         },
       },
     },
@@ -100,10 +106,10 @@ require('snacks').setup {
         win = {
           input = {
             keys = {
-              ['<S-h>'] = 'toggle_hidden',
-              ['<S-i>'] = 'toggle_ignored',
-              ['<S-f>'] = 'toggle_follow',
-              ['<C-y>'] = { 'yazi_copy_relative_path', mode = { 'n', 'i' } },
+              ['<s-h>'] = 'toggle_hidden',
+              ['<s-i>'] = 'toggle_ignored',
+              ['<s-f>'] = 'toggle_follow',
+              ['<c-y>'] = { 'yazi_copy_relative_path', mode = { 'n', 'i' } },
             },
           },
         },
@@ -120,6 +126,7 @@ require('snacks').setup {
           '**/.yarn/releases/*',
           '**/.pnpm-store/*',
           '**/.idea',
+          '**/.ds_store',
           '**/.DS_Store',
           '**/bin',
           '**/build/classes',
@@ -144,13 +151,14 @@ require('snacks').setup {
       grep = {
         hidden = true,
         ignored = true,
+        live = true,
         layout = { preset = 'ivy' },
         win = {
           input = {
             keys = {
-              ['<S-h>'] = 'toggle_hidden',
-              ['<S-i>'] = 'toggle_ignored',
-              ['<S-f>'] = 'toggle_follow',
+              ['<s-h>'] = 'toggle_hidden',
+              ['<s-i>'] = 'toggle_ignored',
+              ['<s-f>'] = 'toggle_follow',
             },
           },
         },
@@ -168,6 +176,7 @@ require('snacks').setup {
           '**/.pnpm-store/*',
           '**/.venv/*',
           '**/.idea/*',
+          '**/.ds_store',
           '**/.DS_Store',
           '**/yarn.lock',
           '**/bin',
@@ -206,7 +215,11 @@ require('snacks').setup {
         jump = { close = true },
         tree = true,
         watch = true,
-
+        layout = {
+          layout = {
+            width = 0.4,
+          },
+        },
         include = {
           '**/build/generated-sources',
           '**/build/generated-specs',
@@ -216,6 +229,7 @@ require('snacks').setup {
           '.git',
           '.pnpm-store',
           '.venv',
+          '.ds_store',
           '.DS_Store',
           '**/.node-gyp/**',
           '**/node_modules',
@@ -252,6 +266,9 @@ require('snacks').setup {
         modes = { 'n' },
         sort = {
           fields = { 'score:desc', 'key', 'mode', 'idx' },
+        },
+        matcher = {
+          fuzzy = false,
         },
       },
 
@@ -318,53 +335,53 @@ require('snacks').setup {
   },
 
   -- ── words ────────────────────────────────────────────────────────────
-  -- Replaces the entire documentHighlightProvider autocmd block from the
-  -- LspAttach config. Highlights all references to the word under cursor,
+  -- replaces the entire documenthighlightprovider autocmd block from the
+  -- lspattach config. highlights all references to the word under cursor,
   -- and adds ]w / [w to jump between them.
-  -- Remove the documentHighlightProvider block from your LspAttach autocmd
+  -- remove the documenthighlightprovider block from your lspattach autocmd
   -- once this is enabled.
   words = {
     enabled = true,
-    debounce = 200, -- ms after CursorHold before highlighting fires
-    notify_jump = false, -- don't echo "jumped to X references"
+    debounce = 200, -- ms after cursorhold before highlighting fires
+    notify_jump = false, -- don't echo "jumped to x references"
   },
   lazygit = {
     enabled = true,
   },
 
   -- ── toggle ───────────────────────────────────────────────────────────
-  -- Stateful toggles that show ON/OFF state in which-key with color coding.
-  -- Replaces the manual inlay hint toggle in LspAttach, and supersedes the
+  -- stateful toggles that show on/off state in which-key with color coding.
+  -- replaces the manual inlay hint toggle in lspattach, and supersedes the
   -- raw vim.diagnostic.config calls for per-session toggling.
-  -- No setup config needed; toggles are created via the API (see keymaps below).
+  -- no setup config needed; toggles are created via the api (see keymaps below).
 
   -- ── indent ───────────────────────────────────────────────────────────
-  -- Replaces indent-blankline. Uses Snacks.scope for treesitter-aware
+  -- replaces indent-blankline. uses snacks.scope for treesitter-aware
   -- scope detection — they share the same underlying scope engine,
   -- so no duplication or mismatch between indent guides and scope highlight.
   indent = {
     enabled = true,
     indent = {
       char = '│',
-      hl = 'SnacksIndent',
+      hl = 'snacksindent',
       only_scope = false,
       only_current = false,
     },
     hl = {
-      'SnacksIndent1',
-      'SnacksIndent2',
-      'SnacksIndent3',
-      'SnacksIndent4',
-      'SnacksIndent5',
-      'SnacksIndent6',
-      'SnacksIndent7',
-      'SnacksIndent8',
+      'snacksindent1',
+      'snacksindent2',
+      'snacksindent3',
+      'snacksindent4',
+      'snacksindent5',
+      'snacksindent6',
+      'snacksindent7',
+      'snacksindent8',
     },
-    -- Highlight the current scope's indent level
+    -- highlight the current scope's indent level
     scope = {
       enabled = true,
       char = '│',
-      hl = 'SnacksIndentScope', -- distinct color from indent guides
+      hl = 'snacksindentscope', -- distinct color from indent guides
       underline = false, -- underline the opening line
       only_current = false,
     },
@@ -372,45 +389,44 @@ require('snacks').setup {
       style = 'down',
     },
     chunk = {
-      -- Draws a corner bracket at the start/end of the scope instead of
+      -- draws a corner bracket at the start/end of the scope instead of
       -- a straight line — useful for seeing where a block closes
       enabled = false, -- enable if you prefer bracket-style over underline
     },
   },
 
   -- ── scope ────────────────────────────────────────────────────────────
-  -- Treesitter/indent-based scope detection. Powers Snacks.indent above.
-  -- Also exposes text objects (ii/ai) and jump commands ([i/]i) for
+  -- treesitter/indent-based scope detection. powers snacks.indent above.
+  -- also exposes text objects (ii/ai) and jump commands ([i/]i) for
   -- the current scope — complementary to treesitter-textobjects' af/if.
   -- ii/ai = scope block (whatever encloses the cursor: method, if, for...)
-  -- Note: check for conflicts with your @conditional.inner mapping (ii).
+  -- note: check for conflicts with your @conditional.inner mapping (ii).
   scope = {
     enabled = true,
     cursor = true,
     siblings = true,
-    -- Use treesitter when available, fall back to indent
+    -- use treesitter when available, fall back to indent
     treesitter = { enabled = true, injections = true, blocks = {
       enabled = true,
     } },
   },
 
   -- ── notifier ─────────────────────────────────────────────────────────
-  -- Replaces fidget.nvim. Shows jdtls indexing/build progress as
+  -- replaces fidget.nvim. shows jdtls indexing/build progress as
   -- non-intrusive notifications rather than in the statusline.
   notifier = {
     enabled = true,
     timeout = 3000,
-    style = 'fancy', -- "compact" | "fancy" | "minimal"
+    style = 'minimal', -- "compact" | "fancy" | "minimal"
     top_down = false, -- notifications stack upward from the bottom
-    -- filter = function(notif)
-    --   local filter_jdtls_publish_diag = not (notif.title == 'jdtls' and notif.msg:find 'Publish Diagnostics')
-    --   local filter_lua_ls_publish_diag = not (notif.title == 'lua_ls' and notif.msg:find 'Processing')
-    --   return filter_jdtls_publish_diag and filter_lua_ls_publish_diag
-    -- end,
+    filter = function(notif)
+      if notif.msg:find("Invalid 'col': out of range", 1, true) then return false end
+      return true
+    end,
   },
 
   -- ── statuscolumn ─────────────────────────────────────────────────────
-  -- Replaces manual sign/fold/number column configuration. Unifies:
+  -- replaces manual sign/fold/number column configuration. unifies:
   -- diagnostics signs, git signs (if using gitsigns.nvim), fold markers,
   -- and line numbers into a single coherent gutter layout.
   statuscolumn = {
@@ -424,15 +440,28 @@ require('snacks').setup {
   },
 
   -- ── scratch ──────────────────────────────────────────────────────────
-  -- Persistent named scratch buffers (survive restarts via shada).
-  -- Better than :enew | setlocal buftype=nofile — content is actually saved.
-  -- Toggle a scratch buffer: Snacks.scratch()
-  -- Pick among existing scratches: Snacks.scratch.select()
+  -- persistent named scratch buffers (survive restarts via shada).
+  -- better than :enew | setlocal buftype=nofile — content is actually saved.
+  -- toggle a scratch buffer: snacks.scratch()
+  -- pick among existing scratches: snacks.scratch.select()
   scratch = { enabled = true },
 
   terminal = {
     win = {
       style = 'terminal',
+    },
+  },
+  zen = {
+    enabled = true,
+    center = true,
+    win = {
+      width = 0.8,
+    },
+    zoom = {
+      center = true,
+      win = {
+        width = 0,
+      },
     },
   },
 }

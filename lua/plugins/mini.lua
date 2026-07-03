@@ -37,12 +37,25 @@ local function setupStatusline()
   ---@diagnostic disable-next-line: duplicate-set-field
   statusline.section_location = function() return '%2l:%-2v' end
 end
--- ... and there is more!
---  Check out: https://github.com/nvim-mini/mini.nvim
+
+local function setupComment() require('mini.comment').setup() end
+
+local function setupMove() require('mini.move').setup() end
+
+local function setupPairs() require('mini.pairs').setup() end
+-- Exported functions
 function M.setupMiniSurround() setupSurround() end
-
 function M.setupMiniAI() setupAi() end
-
 function M.setupMiniStatusline() setupStatusline() end
+function M.setupMiniComment() setupComment() end
+function M.setupMiniMove() setupMove() end
+function M.setupMiniPairs() setupPairs() end
+
+function M.setupMini()
+  setupAi()
+  setupComment()
+  setupMove()
+  setupPairs()
+end
 
 return M

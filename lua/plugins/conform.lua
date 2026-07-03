@@ -1,18 +1,18 @@
 require('conform').setup {
   timeout_ms = 10000,
   notify_on_error = true,
-  format_after_save = function(bufnr)
+  format_on_save = function(bufnr)
     -- You can specify filetypes to autoformat on save here:
     local enabled_filetypes = {
       lua = true,
-      java = true,
+      -- java = true,
       json = true,
       yaml = true,
       go = true,
       -- python = true,
     }
     if enabled_filetypes[vim.bo[bufnr].filetype] then
-      return { timeout_ms = 5000 }
+      return { timeout_ms = 500 }
     else
       return nil
     end

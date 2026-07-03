@@ -1,4 +1,4 @@
-require('nvim-autopairs').setup {}
+-- require('nvim-autopairs').setup {}
 -- note: neovim 0.12 ships native insert-mode completion via 'autocomplete'.
 -- blink.cmp is still worth keeping for: fuzzy matching, ghost text,
 -- integrated signature help, and documentation popup quality.
@@ -44,14 +44,14 @@ require('blink.cmp').setup {
   completion = {
     accept = {
       auto_brackets = {
-        enabled = true,
+        enabled = false,
       },
     },
     -- accept the currently visible ghost text on <right>
-    ghost_text = { enabled = false },
+    ghost_text = { enabled = true, show_with_menu = true },
 
     documentation = {
-      auto_show = true,
+      auto_show = false,
       auto_show_delay_ms = 200,
       window = {
         border = 'rounded',
@@ -63,6 +63,7 @@ require('blink.cmp').setup {
     },
 
     menu = {
+      auto_show = true,
       border = 'rounded',
       direction_priority = { 's', 'n' },
       -- show a kind icon and kind label beside each item
@@ -71,6 +72,46 @@ require('blink.cmp').setup {
         columns = {
           { 'label', 'label_description', gap = 1 },
           { 'kind_icon', 'kind' },
+        },
+        components = {
+          kind_icon = {
+            text = function(ctx)
+              local icon = ctx.kind_icon
+              if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_icon then icon = dev_icon end
+              else
+                icon = require('lspkind').symbol_map[ctx.kind] or ''
+              end
+
+              return icon .. ctx.icon_gap
+            end,
+
+            -- Optionally, use the highlight groups from nvim-web-devicons
+            -- You can also add the same function for `kind.highlight` if you want to
+            -- keep the highlight groups in sync with the icons.
+            highlight = function(ctx)
+              local hl = ctx.kind_hl
+              if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_icon then hl = dev_hl end
+              end
+              return hl
+            end,
+          },
+          kind = {
+            -- Optionally, use the highlight groups from nvim-web-devicons
+            -- You can also add the same function for `kind.highlight` if you want to
+            -- keep the highlight groups in sync with the icons.
+            highlight = function(ctx)
+              local hl = ctx.kind_hl
+              if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_icon then hl = dev_hl end
+              end
+              return hl
+            end,
+          },
         },
       },
     },

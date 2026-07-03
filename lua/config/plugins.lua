@@ -11,10 +11,10 @@ vim.pack.add {
   { src = 'https://github.com/AlexvZyl/nordic.nvim', name = 'nordic', version = vim.version.range '*' },
 }
 
--- require 'plugins.catppuccin'
+require 'plugins.catppuccin'
 -- require 'plugins.tokyonight'
 -- require 'plugins.onedarkpro'
-require 'plugins.cyberdream'
+-- require 'plugins.cyberdream'
 -- require 'plugins.nordic'
 
 vim.pack.add { 'https://github.com/nvim-tree/nvim-web-devicons', 'https://github.com/nvim-lualine/lualine.nvim' }
@@ -27,7 +27,7 @@ require('todo-comments').setup { signs = false }
 -- [[ mini.nvim ]]
 --  A collection of various small independent plugins/modules
 vim.pack.add { 'https://github.com/nvim-mini/mini.nvim' }
-require 'plugins.mini'
+require('plugins.mini').setupMini()
 
 vim.pack.add {
   'https://github.com/lewis6991/gitsigns.nvim',
@@ -83,6 +83,7 @@ require 'plugins.rainbow'
 
 vim.pack.add {
   { src = 'https://github.com/windwp/nvim-autopairs', version = 'master' },
+  { src = 'https://github.com/onsails/lspkind.nvim', version = 'master' },
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' },
 }
 require 'plugins.completion'

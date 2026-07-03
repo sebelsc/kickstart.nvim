@@ -60,8 +60,8 @@ require('tiny-inline-diagnostic').setup {
 
     -- Settings for multiline diagnostics
     multilines = {
-      enabled = false, -- Enable support for multiline diagnostic messages
-      always_show = false, -- Always show messages on all lines of multiline diagnostics
+      enabled = true, -- Enable support for multiline diagnostic messages
+      always_show = true, -- Always show messages on all lines of multiline diagnostics
       trim_whitespaces = false, -- Remove leading/trailing whitespace from each line
       tabstop = 4, -- Number of spaces per tab when expanding tabs
       -- Restrict which severities are shown on non-cursor lines
@@ -97,7 +97,7 @@ require('tiny-inline-diagnostic').setup {
 
     -- Break long messages into separate lines
     break_line = {
-      enabled = false, -- Enable automatic line breaking
+      enabled = true, -- Enable automatic line breaking
       after = 30, -- Number of characters before inserting a line break
     },
 
