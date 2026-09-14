@@ -35,7 +35,7 @@ vim.pack.add {
 }
 
 require 'plugins.gitsigns'
--- ── Tier 1: Core UI — no dependencies ────────────────────────────────────
+-- ── Core UI — no dependencies ────────────────────────────────────
 -- These must be available before everything else because keymaps.lua and
 -- other modules call Snacks.* and require("which-key") at the top level.
 
@@ -53,9 +53,7 @@ require 'plugins.conform'
 vim.pack.add { { src = 'https://github.com/L3MON4D3/LuaSnip', version = vim.version.range '2.*' } }
 require('luasnip').setup {}
 
--- vim.pack.add { { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' } }
--- require 'plugins.blink'
--- -- ── Tier 2: Treesitter — textobjects depend on core parser ───────────────
+-- -- Treesitter — textobjects depend on core parser ───────────────
 -- -- nvim-treesitter must be added (and its setup called) before
 -- -- treesitter-textobjects, because textobjects registers itself as a
 -- -- treesitter module during its own plugin/ sourcing.
@@ -79,7 +77,7 @@ require 'plugins.treesitter-textobjects'
 require 'plugins.treesitter-context'
 require 'plugins.rainbow'
 
--- ── Tier 3: Completion ───────────────────────────────────────────────────
+-- Completion ───────────────────────────────────────────────────
 
 vim.pack.add {
   { src = 'https://github.com/windwp/nvim-autopairs', version = 'master' },
@@ -88,7 +86,7 @@ vim.pack.add {
 }
 require 'plugins.completion'
 
--- ── Tier 4: LSP tooling ──────────────────────────────────────────────────
+-- LSP tooling ──────────────────────────────────────────────────
 -- mason and nvim-jdtls are added eagerly so their Lua modules are
 -- require()-able, but jdtls is only *configured and attached* lazily
 -- in the FileType autocmd (see config/autocmds.lua).
@@ -122,7 +120,6 @@ vim.pack.add {
   'https://github.com/folke/trouble.nvim',
 }
 
-require 'plugins.java'
 require 'plugins.trouble'
 
 -- KOTLIN
@@ -130,22 +127,16 @@ vim.pack.add {
   'https://github.com/AlexandrosAlexiou/kotlin.nvim',
 }
 
-require 'plugins.kotlin'
-
--- -- ── Tier 5: Testing ──────────────────────────────────────────────────────
--- -- plenary and nvim-nio are neotest dependencies; they must be added first
--- -- because neotest's plugin/ scripts require() them at source time.
-
--- require("neotest").setup(require("plugins.neotest"))
-
--- -- ── Tier 6: Everything else ───────────────────────────────────────────────
+-- Everything else ───────────────────────────────────────────────
 vim.pack.add { { src = 'https://github.com/j-hui/fidget.nvim', version = vim.version.range '*' } }
 require 'plugins.fidget'
 
-vim.pack.add { { src = 'https://github.com/sindrets/diffview.nvim', version = 'main' } }
-require 'plugins.diffview'
+vim.pack.add { { src = 'https://github.com/esmuellert/codediff.nvim', version = vim.version.range '*' } }
+
+vim.pack.add { { src = 'https://github.com/neogitorg/neogit', version = 'master' } }
 
 vim.pack.add { 'https://github.com/stevearc/oil.nvim' }
+
 require 'plugins.oil'
 
 vim.pack.add { 'https://github.com/folke/flash.nvim' }
@@ -162,3 +153,8 @@ require 'plugins.lightbulb'
 
 vim.pack.add { 'https://github.com/felpafel/inlay-hint.nvim' }
 require 'plugins.inlay-hint'
+
+-- Learning vim motions
+vim.pack.add { 'https://github.com/m4xshen/hardtime.nvim', 'https://github.com/tris203/precognition.nvim' }
+require 'plugins.hardtime'
+require 'plugins.precognition'

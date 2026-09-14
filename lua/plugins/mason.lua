@@ -30,10 +30,14 @@ vim.list_extend(ensure_installed, {
   'jdtls',
   'java-debug-adapter',
   'java-test',
+  'json-lsp',
+  'yaml-language-server',
+  'kotlin-lsp',
+  'angularls',
   -- You can add other tools here that you want Mason to install
 })
 
-require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+require('mason-tool-installer').setup { ensure_installed = ensure_installed, start_delay = 3000, debounce_hours = 5 }
 
 for name, server in pairs(servers) do
   vim.lsp.config(name, server)
@@ -41,9 +45,5 @@ for name, server in pairs(servers) do
 end
 
 require('mason-lspconfig').setup {
-  automatic_enable = {
-    exclude = {
-      'jdtls',
-    },
-  },
+  automatic_enable = false,
 }

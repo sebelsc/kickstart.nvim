@@ -20,3 +20,6 @@ spell/
 /.idea/nvim.iml
 /.idea/palantir-java-format.xml
 /.idea/vcs.xml
+
+startup.log
+hook-debug.log

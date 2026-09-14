@@ -1,3 +1,4 @@
+require 'plugins.java'
 -- ftplugin/java.lua
 local jdtls = require 'jdtls'
 -- Runs once per Java buffer. Starts or attaches eclipse.jdt.ls via nvim-jdtls.
@@ -16,7 +17,7 @@ local root = vim.fs.root(0, {
   'mvnw',
 })
 if not root then return end
-local config_dir = vim.fn.stdpath 'data' .. '/mason' .. '/packages' .. '/jdtls' .. '/config_mac_arm'
+local config_dir = '~/.cache/nvim/jdtls'
 -- Unique data dir per project so jdtls doesn't re-index across projects.
 local workspace = vim.fn.stdpath 'data' .. '/jdtls/' .. vim.fn.fnamemodify(root, ':h:t') .. '/' .. vim.fn.fnamemodify(root, ':t')
 
@@ -36,7 +37,7 @@ end
 -- Uncomment together with the spring-boot.nvim block in custom/plugins/java.lua.
 -- vim.list_extend(bundles, require('spring_boot').java_extensions())
 -- instead of require("spring_boot").java_extensions()
-vim.list_extend(bundles, require('spring_boot').java_extensions(vim.fn.expand '~/.vscode/extensions/vmware.vscode-spring-boot-2.2.0/jars'))
+vim.list_extend(bundles, require('spring_boot').java_extensions(vim.fn.expand '~/.vscode/extensions/vmware.vscode-spring-boot-2.4.0/jars'))
 
 local config = {
   cmd = {
@@ -89,6 +90,7 @@ local config = {
           wrapper = {
             checksums = {
               { sha256 = '497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7', allowed = true },
+              { sha256 = '7a9ce74cff467ca1bf60a4fcd9f05185acceda4d0f382434d393e17864262c5d', allowed = true },
             },
           },
         },
@@ -102,8 +104,8 @@ local config = {
       inlayHints = { parameterNames = { enabled = 'all' } }, -- none/literals/all
 
       -- Code lenses (correct names + shapes):
-      referencesCodeLens = { enabled = true },
-      implementationCodeLens = 'all', -- 'all' | 'types' | 'methods'
+      referencesCodeLens = { enabled = false },
+      implementationCodeLens = 'none', -- 'all' | 'types' | 'methods'
 
       completion = {
         favoriteStaticMembers = {
@@ -176,10 +178,10 @@ local config = {
 
 jdtls.start_or_attach(config)
 
-vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
-  buffer = 0,
-  callback = function() vim.lsp.codelens.enable(true, { bufnr = 0 }) end,
-})
+-- vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
+--   buffer = 0,
+--   callback = function() vim.lsp.codelens.enable(true, { bufnr = 0 }) end,
+-- })
 
 vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
 

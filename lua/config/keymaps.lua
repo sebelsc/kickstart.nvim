@@ -165,12 +165,31 @@ local function setup_core()
   end, { desc = 'Inspect highlights' })
 
   -- ── Git (<leader>g) ───────────────────────────────────────────
-  vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit() end, { desc = '[g]it [l]azy', silent = true })
-  vim.keymap.set('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = '[g]it log [f]ile', silent = true })
-  vim.keymap.set('n', '<leader>gs', function() Snacks.picker.git_status() end, { desc = '[g]it [s]tatus', silent = true })
-  vim.keymap.set('n', '<leader>gdd', function() Snacks.picker.git_diff() end, { desc = '[g]it [d]iff', silent = true })
+  vim.keymap.set('n', '<leader>gu', function()
+    require 'plugins.neogit' -- config module: runs neogit.setup(), returns nothing
+    require('neogit').open()
+  end, { desc = '[g]it [u]i', silent = true })
+  vim.keymap.set('n', '<leader>gfl', function()
+    require 'plugins.neogit'
+    require('neogit').open { 'log' }
+  end, { desc = '[g]it [f]ile [l]og', silent = true })
+  vim.keymap.set('n', '<leader>gs', function()
+    require 'plugins.codediff'
+    vim.cmd 'CodeDiff'
+  end, { desc = '[g]it [s]tatus', silent = true })
+  vim.keymap.set('n', '<leader>gdd', function()
+    require 'plugins.codediff'
+    vim.cmd 'CodeDiff file HEAD'
+  end, { desc = '[g]it [d]iff vs HEAD', silent = true })
   -- Diff current file vs index (unstaged changes)
-  vim.keymap.set('n', '<leader>gdD', '<cmd>DiffviewOpen -- %<CR>', { desc = 'Diff file vs index' })
+  vim.keymap.set('n', '<leader>gdD', function()
+    require 'plugins.codediff'
+    vim.cmd 'CodeDiff file main'
+  end, { desc = '[g]it [D]iff vs main' })
+  vim.keymap.set('n', '<leader>gdB', function()
+    require 'plugins.codediff'
+    vim.cmd 'CodeDiff main...HEAD'
+  end, { desc = '[g]it [d]iff [B]ranch vs main' })
   -- Diff current file vs origin/main (changes since branching)
   -- vim.keymap.set('n', '<leader>gdd', '<cmd>DiffviewOpen origin/main...HEAD -- %<CR>', { desc = 'Diff file vs main' })
   -- File history for current file
@@ -190,6 +209,8 @@ local function setup_core()
   -- toggle.option('spell'):map('<leader>uts', { desc = '[u]i [t]oggle [s]pell' })
   toggle.diagnostics({ virtual_text = true }):map('<leader>utv', { desc = '[u]i [t]oggle [v]irtual text' })
   vim.keymap.set('n', '<leader>utgw', require('gitsigns').toggle_word_diff, { desc = '[u]i [t]oggle [g]it [w]ords', silent = true })
+  vim.keymap.set('n', '<leader>uth', '<cmd>Hardtime toggle<cr>', { desc = '[u]i [t]oggle [h]ardtime', silent = true })
+  vim.keymap.set('n', '<leader>utp', require('precognition').toggle, { desc = '[u]i [t]oggle [p]recognition', silent = true })
   vim.keymap.set('n', '<leader>uso', function() Snacks.terminal() end, { desc = '[u]i [s]hell [o]pen', silent = true })
   vim.keymap.set('t', '<C-t>', function() Snacks.terminal() end) -- toggle from terminal mode too
   vim.keymap.set('n', '<leader>unh', function() Snacks.notifier.show_history() end, { desc = '[u]i [n]otification [h]istory', silent = true })
@@ -267,6 +288,16 @@ local function setup_core()
   vim.keymap.set({ 'i', 'x' }, '<M-s>', '<Esc><Cmd>silent! update | redraw<CR>', { desc = '[f]ile [s]ave' })
   vim.keymap.set('n', '<M-S>', '<Cmd>silent! wa | redraw<CR>', { desc = '[f]ile [S]ave all' })
   vim.keymap.set({ 'i', 'x' }, '<M-S>', '<Esc><Cmd>silent! wa | redraw<CR>', { desc = '[f]ile [S]ave all' })
+
+  -- ── Trouble (<leader>x) ──────────────────────────────────────────────
+  vim.keymap.set('n', '<leader>xw', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'diagnostics [w]workspace', silent = true })
+  vim.keymap.set('n', '<leader>xb', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', { desc = 'diagnostics [b]uffer', silent = true })
+  vim.keymap.set('n', '<leader>xs', '<cmd>Trouble symbols toggle focus=false<cr>', { desc = 'symbols', silent = true })
+  vim.keymap.set('n', '<leader>xl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', { desc = '[x]lsp refs/defs/impls', silent = true })
+  vim.keymap.set('n', '<leader>xi', '<cmd>Trouble lsp_incoming_calls toggle<cr>', { desc = '[i]ncoming calls', silent = true })
+  vim.keymap.set('n', '<leader>xo', '<cmd>Trouble lsp_outgoing_calls toggle<cr>', { desc = '[o]utgoing calls', silent = true })
+  vim.keymap.set('n', '<leader>xq', '<cmd>Trouble qflist toggle<cr>', { desc = '[q]uickfix (grep/tests)', silent = true })
+  vim.keymap.set('n', '<leader>xt', '<cmd>Trouble todo toggle<cr>', { desc = '[t]odos', silent = true })
 end
 
 -- ── LSP keymaps (buffer-local) ───────────────────────────────────────────
@@ -324,6 +355,12 @@ function M.on_lsp_attach(bufnr, client)
   -- Code lens (code group)
   if client and client.server_capabilities.codeLensProvider then
     vim.keymap.set('n', '<leader>cl', vim.lsp.codelens.run, { desc = '[c]ode [l]ens', buffer = bufnr, silent = true })
+    vim.keymap.set(
+      'n',
+      '<leader>utc',
+      function() vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled()) end,
+      { desc = '[u]i [t]oggle [c]odelens', silent = true }
+    )
   end
 end
 
@@ -336,7 +373,8 @@ local function setup_whichkey()
     { '<leader>c', group = '[c]ode' },
     { '<leader>f', group = '[f]ile' },
     { '<leader>g', group = '[g]it', mode = { 'n', 'v' } },
-    { '<leader>gd', group = '[g]it [d]iffview', mode = { 'n' } },
+    { '<leader>gd', group = '[g]it [d]iff', mode = { 'n' } },
+    { '<leader>gf', group = '[g]it [f]ile', mode = { 'n' } },
     { '<leader>i', group = '[i]nspect', mode = { 'n' } },
     { '<leader>j', group = '[j]ump', mode = { 'n', 'v' } },
     { '<leader>p', group = '[p]aste', mode = { 'n' } },
@@ -347,6 +385,7 @@ local function setup_whichkey()
     { '<leader>us', group = '[u]i [s]hell' },
     { '<leader>ut', group = '[u]i [t]oggle' },
     { '<leader>utg', group = '[u]i [t]oggle [g]it' },
+    { '<leader>x', group = '[x] trouble' },
 
     { ']', group = 'Next', mode = { 'n', 'x', 'o' } },
     { '[', group = 'Prev', mode = { 'n', 'x', 'o' } },

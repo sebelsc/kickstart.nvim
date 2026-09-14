@@ -60,6 +60,9 @@ require('snacks').setup {
       ignorecase = true,
       smartcase = true,
     },
+    filter = {
+      cwd = true,
+    },
     layouts = {
       ivy_narrow_preview = {
         layout = {
@@ -101,7 +104,7 @@ require('snacks').setup {
     sources = {
       files = {
         hidden = true,
-        ignored = true,
+        ignored = false,
         layout = { preset = 'select', layout = { width = 0.7, max_width = 200 } },
         win = {
           input = {
@@ -150,7 +153,7 @@ require('snacks').setup {
       },
       grep = {
         hidden = true,
-        ignored = true,
+        ignored = false,
         live = true,
         layout = { preset = 'ivy' },
         win = {
@@ -251,7 +254,7 @@ require('snacks').setup {
       smart = {
         multi = { 'recent', 'files' },
         format = 'file',
-        filter = { cwd = true, buf = true },
+        filter = { cwd = true },
         layout = { preset = 'select', layout = { width = 0.7, max_width = 200 } },
       },
       recent = {
@@ -278,7 +281,6 @@ require('snacks').setup {
       lsp_incoming_calls = { layout = { preset = 'ivy' } },
       lsp_outgoing_calls = { layout = { preset = 'ivy' } },
       lsp_symbols = {
-        live = true,
         layout = {
           preset = 'select',
         },
@@ -455,7 +457,7 @@ require('snacks').setup {
     enabled = true,
     center = true,
     win = {
-      width = 0.8,
+      width = 0.6,
     },
     zoom = {
       center = true,

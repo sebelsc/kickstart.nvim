@@ -31,6 +31,10 @@
 
 -- ── 2. Options ───────────────────────────────────────────────────────────
 -- Pure vim.opt calls. No plugin references.
+
+-- Enable faster startup by caching compiled Lua modules
+vim.loader.enable()
+
 require 'config.options'
 
 -- ── 3 + 4. Plugins — add then configure immediately ──────────────────────
@@ -39,20 +43,20 @@ require 'config.options'
 -- Because add() is synchronous, the plugin is available when setup() runs.
 require 'config.plugins' -- see lua/config/plugins.lua below
 
-local ih_ns = vim.api.nvim_create_namespace 'nvim.lsp.inlayhint'
-local orig = vim.api.nvim_buf_set_extmark
-
-vim.api.nvim_buf_set_extmark = function(buf, ns, line, col, opts)
-  if ns == ih_ns then
-    local ok, result = pcall(orig, buf, ns, line, col, opts)
-    if not ok then
-      vim.notify(result, vim.log.levels.WARN)
-      return -1
-    end
-    return result
-  end
-  return orig(buf, ns, line, col, opts)
-end
+-- local ih_ns = vim.api.nvim_create_namespace 'nvim.lsp.inlayhint'
+-- local orig = vim.api.nvim_buf_set_extmark
+--
+-- vim.api.nvim_buf_set_extmark = function(buf, ns, line, col, opts)
+--   if ns == ih_ns then
+--     local ok, result = pcall(orig, buf, ns, line, col, opts)
+--     if not ok then
+--       vim.notify(result, vim.log.levels.WARN)
+--       return -1
+--     end
+--     return result
+--   end
+--   return orig(buf, ns, line, col, opts)
+-- end
 
 -- ── 5. Autocmds ──────────────────────────────────────────────────────────
 -- LspAttach, FileType handlers, format-on-save, etc.

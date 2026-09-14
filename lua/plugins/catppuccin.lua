@@ -21,46 +21,11 @@ require('catppuccin').setup {
     which_key = true,
     flash = true,
     fzf = true,
+    lsp_saga = true,
     gitsigns = {
       enabled = true,
       transparent = false,
     },
-    -- lualine = {
-    --   enabled = true,
-    --   normal = {
-    --     a = { bg = C.blue, fg = C.mantle, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.blue },
-    --     c = { bg = transparent_bg, fg = C.text },
-    --   },
-    --
-    --   insert = {
-    --     a = { bg = C.green, fg = C.base, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.green },
-    --   },
-    --
-    --   terminal = {
-    --     a = { bg = C.green, fg = C.base, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.green },
-    --   },
-    --
-    --   command = {
-    --     a = { bg = C.peach, fg = C.base, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.peach },
-    --   },
-    --   visual = {
-    --     a = { bg = C.mauve, fg = C.base, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.mauve },
-    --   },
-    --   replace = {
-    --     a = { bg = C.red, fg = C.base, gui = 'bold' },
-    --     b = { bg = C.surface0, fg = C.red },
-    --   },
-    --   inactive = {
-    --     a = { bg = transparent_bg, fg = C.blue },
-    --     b = { bg = transparent_bg, fg = C.surface1, gui = 'bold' },
-    --     c = { bg = transparent_bg, fg = C.overlay0 },
-    --   },
-    -- },
     diffview = true,
     mason = true,
     neotest = true,
@@ -76,6 +41,18 @@ require('catppuccin').setup {
     },
     -- Disable ibl — using Snacks.indent instead
     indent_blankline = { enabled = false },
+    lualine = {
+      all = function(colors)
+        return {
+          normal = { c = { bg = colors.crust } },
+          -- insert = { a = { bg = colors.crust }, b = { bg = colors.crust } },
+          -- visual = { a = { bg = colors.crust }, b = { bg = colors.crust } },
+          -- replace = { a = { bg = colors.crust }, b = { bg = colors.crust } },
+          -- command = { a = { bg = colors.crust }, b = { bg = colors.crust } },
+          -- inactive = { a = { bg = colors.crust }, b = { bg = colors.crust }, c = { bg = colors.crust } },
+        }
+      end,
+    },
     -- native_lsp = {
     --   enabled = true,
     --   -- Style for LSP virtual text by severity
@@ -113,9 +90,25 @@ require('catppuccin').setup {
   },
   custom_highlights = function(colors)
     return {
-      YankHighlight = { bg = colors.flamingo, fg = colors.base, style = { 'bold' } },
-      NormalFloat = { bg = colors.base },
+      Normal = { bg = colors.crust },
+      NormalNC = { bg = colors.crust },
+      NormalFloat = { bg = colors.crust },
+      StatusLine = { bg = colors.crust },
+      StatusLineNC = { bg = colors.crust },
+      TabLine = { bg = colors.crust },
+      TabLineFill = { bg = colors.crust },
+      SignColumnSB = { bg = colors.crust },
+      Pmenu = { bg = colors.crust },
+      FloatTitle = { bg = colors.crust },
+      SignColumn = { bg = colors.crust },
+      YankHighlight = { bg = colors.peach, fg = colors.crust, style = { 'bold' } },
       FloatBorder = { fg = colors.overlay0, bg = colors.base },
+      SnacksPickerInputBorder = { bg = colors.crust },
+      SnacksPickerBorder = { bg = colors.crust },
+      SnacksPickerBoxBorder = { bg = colors.crust },
+      SnacksPickerListBorder = { bg = colors.crust },
+      SnacksPickerPreviewBorder = { bg = colors.crust },
+      SnacksPickerBoxFooter = { bg = colors.crust },
     }
   end,
   -- Custom highlight overrides using the Mocha palette.

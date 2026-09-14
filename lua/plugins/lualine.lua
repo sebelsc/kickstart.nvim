@@ -2,7 +2,7 @@ local mocha_colors = require('catppuccin.palettes').get_palette 'mocha'
 
 require('lualine').setup {
   options = {
-    theme = 'auto',
+    theme = 'catppuccin-nvim',
     icons_enabled = true,
   },
   extensions = {

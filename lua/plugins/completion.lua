@@ -33,7 +33,7 @@ require('blink.cmp').setup {
   -- },
 
   sources = {
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    default = { 'lsp', 'path', 'snippets' },
     -- per-filetype overrides: restrict buffer source in java files to
     -- avoid noise — jdtls completion is comprehensive enough
     per_filetype = {
@@ -48,7 +48,7 @@ require('blink.cmp').setup {
       },
     },
     -- accept the currently visible ghost text on <right>
-    ghost_text = { enabled = true, show_with_menu = true },
+    ghost_text = { enabled = false, show_with_menu = true },
 
     documentation = {
       auto_show = false,

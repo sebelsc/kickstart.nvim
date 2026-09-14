@@ -19,7 +19,7 @@
 -- }
 --
 require('spring_boot').setup {
-  ls_path = vim.fn.expand '~/.vscode/extensions/vmware.vscode-spring-boot-2.2.0/language-server/spring-boot-language-server-2.2.0-SNAPSHOT-exec.jar',
+  ls_path = vim.fn.expand '~/.vscode/extensions/vmware.vscode-spring-boot-2.4.0/language-server/spring-boot-language-server-2.4.0-SNAPSHOT-exec.jar',
   java_cmd = vim.fn.expand '/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home/bin/java',
 }
 
@@ -54,6 +54,12 @@ require('neotest').setup {
     }, {
       classpath_provider = gradle_folder_classpath_provider,
     }),
+  },
+  output = {
+    open_on_run = false,
+  },
+  output_panel = {
+    open = 'botright split | resize 15',
   },
 }
 

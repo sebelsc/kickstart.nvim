@@ -14,7 +14,7 @@ vim.lsp.config('yamlls', {
         enable = false,
         url = '',
       },
-      scheams = require('schemastore').yaml.schemas(),
+      schemas = require('schemastore').yaml.schemas(),
     },
   },
 })
